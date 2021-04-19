@@ -1,0 +1,53 @@
+﻿@model IEnumerable<DrinkWholeSale.Web.Models.SubCat>
+
+@{
+    ViewData["Title"] = "Subcategories";
+}
+
+<h1>Subcategories</h1>
+
+<p>
+    <a asp-action="Create">Create New Subcategory</a>
+</p>
+
+<table class="table table-hover table-dark">
+    <thead>
+        <tr>
+            <th scope="col">@Html.DisplayNameFor(model => model.First().Name)</th>
+            <th scope="col">Main Category</th>
+            <th scope="col">Subcategory</th>
+            <th scope="col">Edit</th>
+            <th scope="col">Details</th>
+            <th scope="col">Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MainCat.Name)
+            </td>
+
+            <td>
+                <a class="badge badge-light" asp-action="Index" asp-controller="Products" asp-route-id="@item.Id" asp-route-page="1">Drinks</a>
+            </td>
+
+            <td>
+                <a class="badge badge-light" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+            </td>
+            <td>
+                <a class="badge badge-light" asp-action="Details" asp-route-id="@item.Id">Details</a>
+            </td>
+            <td>
+                <a class="badge badge-light" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+

@@ -1,0 +1,84 @@
+﻿@using DrinkWholeSale.Web.Models;
+@model ShoppingCartViewModel
+@{
+    ViewData["Title"] = "Paying";
+}
+
+<h1>Index</h1>
+
+
+<div class="contentBody">
+   
+    <form asp-controller="ShoppingCarts" asp-action="Index"> @*itt volt egy id*@
+        @* Automatikus védelem XSRF támadás ellen *@
+
+        <table>
+            <tr>
+                <td colspan="2" valign="middle">
+                    @* globális modellhibák megjelenítése *@
+                    <div asp-validation-summary="ModelOnly" class="failureNotification"></div>
+
+                    <div class="contentHead">
+                        Private data:
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td width="120">
+                    Name:
+                </td>
+                <td class="failureNotification">
+                    <input asp-for="GuestName" size="40" />
+                    @* szövegbeviteli mezőt generálunk, amelynek megadjuk a méretét is *@
+                    <span asp-validation-for="GuestName"></span>
+                    @* hibaüzenet megjelenítése *@
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Billing address:
+                </td>
+                <td class="failureNotification">
+                    <input asp-for="GuestAddress" size="40" />
+                    <span asp-validation-for="GuestAddress"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    E-mail:
+                </td>
+                <td class="failureNotification">
+                    <input asp-for="GuestEmail" size="40" />
+                    @* a szerkesztőelemet a modell szabja meg, de így befolyásolhatjuka méretét *@
+                    <span asp-validation-for="GuestEmail"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Phone:
+                </td>
+                <td class="failureNotification">
+                    <input asp-for="GuestPhoneNumber" size="40" />
+                    <span asp-validation-for="GuestPhoneNumber"></span>
+                </td>
+            </tr>
+         
+            <tr>
+                <td>
+                    Cost: @ViewBag.totalGrossPrice
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2" align="right">
+                    <input type="submit" value="Pay" class="button" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+@section Scripts
+{
+    @* jQuery Validation használata a kliens oldali validációra *@
+    <partial name="_ValidationScriptsPartial" />
+}

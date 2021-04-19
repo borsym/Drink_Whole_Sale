@@ -1,0 +1,83 @@
+﻿@model DrinkWholeSale.Web.Models.Product
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Product</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit"  enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Producer" class="control-label"></label>
+                <input asp-for="Producer" class="form-control" />
+                <span asp-validation-for="Producer" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TypeNumber" class="control-label"></label>
+                <input asp-for="TypeNumber" class="form-control" />
+                <span asp-validation-for="TypeNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NetPrice" class="control-label"></label>
+                <input asp-for="NetPrice" class="form-control" />
+                <span asp-validation-for="NetPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Quantity" class="control-label"></label>
+                <input asp-for="Quantity" class="form-control" />
+                <span asp-validation-for="Quantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pack" class="control-label"></label>
+                <select asp-for="Pack" class="form-control"></select>
+                <span asp-validation-for="Pack" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GrossPrice" class="control-label"></label>
+                <input asp-for="GrossPrice" class="form-control" />
+                <span asp-validation-for="GrossPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Image" class="control-label"></label>
+                @if(Model?.Image != null)
+            {
+                <img src="@Url.Action("DisplayImage", "Products", new  { id = Model.Id})" class="item" />
+            }
+                <input asp-for="Image"  type="file" accept="image/png" class="form-control" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SubCatId" class="control-label"></label>
+                <select asp-for="SubCatId" class="form-control" asp-items="ViewBag.SubCatId"></select>
+                <span asp-validation-for="SubCatId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

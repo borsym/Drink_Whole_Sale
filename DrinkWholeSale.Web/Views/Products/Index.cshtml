@@ -1,0 +1,140 @@
+﻿@model IEnumerable<DrinkWholeSale.Web.Models.Product>
+
+@{
+    ViewData["Title"] = "Products";
+}
+
+<link rel="stylesheet" href="~/css/product2.css" />
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+<a class="badge badge-light" asp-action="Index" asp-route-sortOrder="@ViewData["ProducerSortParam"]"> @Html.DisplayNameFor(model => model.Producer)</a>
+<a class="badge badge-light" asp-action="Index" asp-route-sortOrder="@ViewData["NetPriceSortParam"]">
+    @Html.DisplayNameFor(model => model.NetPrice)
+</a>
+<div class="container2">
+    <div class="row">
+        @foreach (Product item in Model)
+        {
+            <div class="col-md-3">
+                <div class="product-top">
+                    @if (item.Image != null)
+                    {
+                        <img src="@Url.Action("DisplayImage","Products",new { id = item.Id })" class="item" />
+                    }
+                    <div class="overlay">
+                        <a class="badge badge-light" asp-controller="ShoppingCarts" asp-action="AddCart" asp-route-id="@item.Id"><i class="fa fa-shopping-cart"></i></a>
+
+                    </div>
+                </div>
+                <div class="product-bottom text-center">
+                    <h3>@Html.DisplayFor(modelItem => item.Name)</h3>
+                    <h5> @Html.DisplayFor(modelItem => item.GrossPrice) HUF</h5>
+                    <h5><a asp-action="Details" asp-route-id="@item.Id">Details</a></h5>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@*<h1>Products</h1>
+
+    <p>
+        <a asp-action="Create">Create New Product</a>
+    </p>
+
+    <table class="table table-hover table-dark">
+        <thead>
+            <tr>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.Image)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th scope="col">
+                    <a class="badge badge-light" asp-action="Index" asp-route-sortOrder="@ViewData["ProducerSortParam"]"> @Html.DisplayNameFor(model => model.Producer)</a>
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.TypeNumber)
+                </th>
+                <th scope="col">
+                    <a class="badge badge-light" asp-action="Index" asp-route-sortOrder="@ViewData["NetPriceSortParam"]">
+                        @Html.DisplayNameFor(model => model.NetPrice)
+                    </a>
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Quantity)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.Pack)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.GrossPrice)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.Pack)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.SubCat)
+                </th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (Product item in Model)
+            {
+                <tr>
+                    <td >
+                        @if (item.Image != null)
+                        {
+                            <img src="@Url.Action("DisplayImage","Products",new { id = item.Id })" class="item" />
+                        }
+                    </td>
+                    <td >
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td >
+                        @Html.DisplayFor(modelItem => item.Producer)
+                    </td>
+                    <td >
+                        @Html.DisplayFor(modelItem => item.TypeNumber)
+                    </td>
+                    <td >
+                        @Html.DisplayFor(modelItem => item.NetPrice)
+                    </td>
+                    <td >
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                    <td >
+                        @Html.DisplayFor(modelItem => item.Pack)
+                    </td>
+                    <td >
+                        @Html.DisplayFor(modelItem => item.GrossPrice)
+                    </td>
+                    <td >
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td >
+                        @Html.DisplayFor(modelItem => item.Pack)
+                    </td>
+                    <td >
+                        @Html.DisplayFor(modelItem => item.SubCat.Name)
+                    </td>
+                    <td>
+                        <a class="badge badge-light" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a class="badge badge-light" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a class="badge badge-light" asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
+                        <a class="badge badge-light" asp-controller="ShoppingCarts" asp-action="AddCart" asp-route-id="@item.Id">Add cart</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>*@
+
+@*@for (int i = 1; i <= ViewBag.TotalPages; i++)
+    {
+        <a asp-action="Index" asp-route-page="@i"> [@i] </a>
+    }*@

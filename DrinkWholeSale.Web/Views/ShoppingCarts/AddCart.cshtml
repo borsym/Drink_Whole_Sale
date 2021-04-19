@@ -1,0 +1,95 @@
+﻿@using DrinkWholeSale.Web.Models;
+@model AddShoppingCartViewModel;
+@{
+    ViewData["Title"] = "AddCart";
+}
+
+<h1>AddCart</h1>
+
+<table class="table">
+
+    <tr>
+        <td>
+            <strong>Main category:</strong>  @Model.Product.SubCat.MainCat.Name
+        </td>
+        <td>
+            <strong>Product Name</strong> @Model.Product.Name
+        </td>
+        <td>
+            <div class="contentPrice">
+                <strong>Price/piece:</strong> @Model.Product.NetPrice Ft
+            </div>
+        </td>
+
+    </tr>
+</table>
+<form asp-controller="ShoppingCarts" asp-action="AddCart" asp-route-id="@Model.Product.Id">
+    @*ez lehet így nem jo*@
+    @* Automatikus védelem XSRF támadás ellen *@
+    
+    <table>
+        <tr>
+            <td colspan="2">
+                <div class="failureNotification">@TempData["shortMessage"]</div>
+                <div asp-validation-summary="ModelOnly" class="failureNotification"></div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" valign="middle">
+                <div class="contentHead">
+                    Purchase data:
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+
+                How many
+            </td>
+            <td class="failureNotification">
+                <input asp-for="Quantity" />
+                <span asp-validation-for="Quantity"></span>
+            </td>
+        </tr>
+        <tr>
+
+            <td class="failureNotification">
+                <label asp-for="Pack" class="control-label"></label>
+                <select asp-for="Pack" class="form-control" asp-items="ViewBag.Pack" onchange="val()"></select>
+            </td>
+            
+        </tr>
+        <tr>
+            <td id="csomag"></td>
+        </tr>
+        <tr>
+            <td colspan="2" align="right">
+                <input type="submit" value="Add cart" class="button" />
+            </td>
+        </tr>
+    </table>
+</form>
+<script>                        
+    function val() {
+        d = document.getElementById("Pack").value;
+        switch (d) {
+            case "SHRINK_FILM":
+                document.getElementById("csomag").innerHTML = "6 piece in one shrink film";
+                break;
+            case "SALVER":
+                document.getElementById("csomag").innerHTML = "12 piece in one slaver";
+                break;
+            case "TRAY":
+                document.getElementById("csomag").innerHTML = "24 piece in one tray";
+                break;
+            default:
+                document.getElementById("csomag").innerHTML = 1;
+        }
+        
+    }
+</script>
+@section Scripts
+{
+    @* jQuery Validation használata a kliens oldali validációra *@
+    <partial name="_ValidationScriptsPartial" />
+}

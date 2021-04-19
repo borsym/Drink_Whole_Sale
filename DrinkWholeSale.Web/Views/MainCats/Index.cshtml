@@ -1,0 +1,34 @@
+﻿@model PagedList.IPagedList<DrinkWholeSale.Web.Models.MainCat>
+
+
+@{
+    ViewData["Title"] = "Main categories";
+}
+@using PagedList.Mvc;
+@using PagedList;
+
+
+<h1>Main categories</h1>
+
+<link rel="stylesheet" href="~/css/maincat.css" />
+<div class="container-main">
+    @foreach (var item in Model)
+    {
+    <div class="box">
+        <a asp-action="Index" asp-controller="SubCats" asp-route-id="@item.Id">
+            <div class="imgBx">
+                <img src="~/alkoholos_italok.jpeg" />  @*itt belehet állítani majd hozzárendelt képet*@
+            </div>
+
+            <div class="content">
+                <div>
+                    <h2>@Html.DisplayFor(modelItem => item.Name)</h2>
+                    <p>@Html.DisplayFor(modelItem => item.Name)</p> @*itt lehet kis leírás*@
+                </div>
+            </div>
+            </a>
+        </div>
+       
+    }
+
+</div>
