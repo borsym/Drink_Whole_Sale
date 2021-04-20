@@ -1,5 +1,5 @@
-﻿using DrinkWholeSale.Web.Models;
-using DrinkWholeSale.Web.Models.Shopping;
+﻿using DrinkWholeSale.Persistence;
+using DrinkWholeSale.Persistence.Shopping;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -9,7 +9,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DrinkWholeSale.Web.Services
+namespace DrinkWholeSale.Persistence.Services
 {
     public class DrinkWholeSaleService : IDrinkWholeSaleService
     {
@@ -234,12 +234,57 @@ namespace DrinkWholeSale.Web.Services
         
 
         //---EGYÉB---
-        
-     
+        //public void AddItemShoppingCart(ShoppingCart cartItem)
+        //{
+        //    _context.ShoppingCarts.Add(cartItem);
+        //    _context.SaveChanges();
+        //}
+        //public void RemoveItemShoppingCart(ShoppingCart cartItem)
+        //{
+        //    _context.ShoppingCarts.Remove(cartItem);
+        //    _context.SaveChanges();
+        //}
+        public ShoppingCart GetShoppingCartProduct(int id)
+        {
+            return new ShoppingCart();//_context.ShoppingCarts.Single(p => p.ProductId == id);
+        }
 
-     
-      
-        public ShoppingCart newShoppingCartAdd2(int? productId)
+        //public ShoppingCart GetShoppingCartById(int id)
+        //{
+        //    return _context.ShoppingCarts.FirstOrDefault(i => i.Id == id);
+        //}
+
+
+
+
+
+
+
+        /*
+        public ShoppingCartViewModel newShoppingCart(int? productId)
+        {
+            if (productId == null)
+                return null;
+
+            Product product = _context.Products
+                .Include(a => a.SubCat) 
+                .ThenInclude(b => b.MainCat) 
+                .FirstOrDefault(ap => ap.Id == productId);
+
+            ShoppingCartViewModel shoppingCart = new ShoppingCartViewModel { Product = product}; // létrehozunk egy új foglalást, amelynek megadjuk az terméket
+
+            // beállítunk egy foglalást, amely a következő megfelelő fordulónappal (minimum 1 héttel később), és egy hetes időtartammal rendelkezik
+            //rent.RentStartDate = DateTime.Today + TimeSpan.FromDays(7);
+            //while (rent.RentStartDate.DayOfWeek != apartment.Turnday)
+            //    rent.RentStartDate += TimeSpan.FromDays(1);
+
+            //rent.RentEndDate = rent.RentStartDate + TimeSpan.FromDays(7);
+            
+            // a itt be lett állítva az időintervallum amit lefoglal, akkor itt kellene nekem levonni a darabszámot?
+
+            return shoppingCart;
+        }
+        public AddShoppingCartViewModel newShoppingCartAdd(int? productId)
         {
             if (productId == null)
                 return null;
@@ -248,20 +293,54 @@ namespace DrinkWholeSale.Web.Services
                 .Include(a => a.SubCat)
                 .ThenInclude(b => b.MainCat)
                 .FirstOrDefault(ap => ap.Id == productId);
-            /*  public int Quantity { get; set; }
-          public string Name { get; set; }
-          public int TotalPrice { get; set; }
-          public int TotalGrossPrice { get; set; }
-          public int ProductId { get; set; } // na itt van az hogy melyik termék tartozik hozzá
-          public Packaging Pack { get; set; }*/
 
-            ShoppingCart shoppingCart = new ShoppingCart {
-                Product = product
-            }; // létrehozunk egy új foglalást, amelynek megadjuk az terméket
+            AddShoppingCartViewModel shoppingCart = new AddShoppingCartViewModel { Product = product }; // létrehozunk egy új foglalást, amelynek megadjuk az terméket
 
 
             return shoppingCart;
         }
+        public async Task<bool> SaveShoppingCartAsync(int? productId,string userName, ShoppingCartViewModel cart)
+        {
+            if (productId == null || cart == null) return false;
 
+            if (!Validator.TryValidateObject(cart, new ValidationContext(cart, null, null), null))
+                return false;
+            Guest guest = await _userManager.FindByNameAsync(userName);
+
+            if (guest == null)
+                return false;
+
+            //_context.ShoppingCarts.Add(new ShoppingCart
+            //{
+            //    ProductId = cart.Product.Id,
+            //  //  UserId = guest.Id, // átírtam a UserId-t stringre
+            //    Quantity = cart.Product.Quantity // ez igy talan jo
+            //});
+
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (Exception)
+            {
+                // mentéskor lehet hiba
+                return false;
+            }
+
+            // ha idáig eljutottunk, minden sikeres volt
+            return true;
+        }
+        public int GetPrice(int? productId, ShoppingCartViewModel cart)
+        {
+            if (productId == null || cart == null || cart.Product == null) // itt van a baj nem csak product hanem több product kéne
+                return 0;
+            return cart.Product.NetPrice;
+        }
+        public int GetGrossPrice(int? productId, ShoppingCartViewModel cart)
+        {
+            if (productId == null || cart == null || cart.Product == null) // itt van a baj nem csak product hanem több product kéne
+                return 0;
+            return cart.Product.GrossPrice;
+        }*/
     }
 }

@@ -170,14 +170,15 @@ namespace DrinkWholeSale.Web.Controllers
         [HttpGet]
         public IActionResult AddCart(int? id)
         {
-            var cart = _service.newShoppingCartAdd(id);
+            var cart = _service.newShoppingCartAdd2(id);
             ViewData["Pack"] = new SelectList(Packaging.GetValues(typeof(Packaging)).Cast<Packaging>());
             ViewBag.First = ViewData["Pack"];
             return View(cart);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddCart(int? id, AddShoppingCartViewModel cartvm) // ez a product id
+        public IActionResult AddCart(int? id, ShoppingCart cartvm) // ez a product id
         {
             if (id == null || cartvm == null)
                 return RedirectToAction("Index", "Home");
