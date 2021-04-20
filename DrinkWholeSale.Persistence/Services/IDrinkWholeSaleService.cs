@@ -25,20 +25,13 @@ namespace DrinkWholeSale.Persistence.Services
         IEnumerable<MainCat> MainCats { get; }
         IEnumerable<SubCat> SubCats { get; }
        // IEnumerable<ShoppingCart> ShoppingCarts { get; }
-        
-        /* ezeket ki kellett szednem TODO MEGKÉRDENZI
-        
-        ShoppingCartViewModel newShoppingCart(int? productId);
-        AddShoppingCartViewModel newShoppingCartAdd(int? productId);
-        Task<bool> SaveShoppingCartAsync(int? productId, string userName, ShoppingCartViewModel cart);
-        int GetPrice(int? productId, ShoppingCartViewModel cart);
-        int GetGrossPrice(int? productId, ShoppingCartViewModel cart);
+       
+      
+        ShoppingCart newShoppingCartAdd2(int? productId);
+
+
+
         public Product GetProductById(int? id);
-        */
-
-
-
-
       //  void AddItemShoppingCart(ShoppingCart cartItem);
      //  void RemoveItemShoppingCart(ShoppingCart cartItem);
        // ShoppingCart GetShoppingCartProduct(int id);

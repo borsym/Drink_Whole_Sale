@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using DrinkWholeSale.Web.Models;
+using DrinkWholeSale.Persistence;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 

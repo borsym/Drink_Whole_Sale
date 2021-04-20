@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace DrinkWholeSale.Web.Models
+namespace DrinkWholeSale.Persistence
 {
     public static class SessionExtensions
     {

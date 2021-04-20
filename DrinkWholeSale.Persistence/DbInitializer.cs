@@ -23,7 +23,10 @@ namespace DrinkWholeSale.Persistence
         }
         public static void Initialize(DrinkWholeSaleDbContext context, string imageDirectory)
         {
-            context.Database.Migrate();
+            context.Database.Migrate();// ideiglenesen cserélve
+            //context.Database.EnsureDeleted();
+            //context.Database.EnsureCreated();
+
             if (context.MainCats.Any()) return;
 
             var orangePath = Path.Combine(imageDirectory, "narancsle.png");

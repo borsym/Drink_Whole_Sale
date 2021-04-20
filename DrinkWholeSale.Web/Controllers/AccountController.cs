@@ -1,5 +1,5 @@
-﻿using DrinkWholeSale.Web.Models;
-using DrinkWholeSale.Web.Services;
+﻿using DrinkWholeSale.Persistence;
+using DrinkWholeSale.Persistence.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

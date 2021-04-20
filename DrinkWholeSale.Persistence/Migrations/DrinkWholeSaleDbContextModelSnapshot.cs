@@ -221,6 +221,8 @@ namespace DrinkWholeSale.Persistence.Migrations
 
                     b.HasIndex("OrderId");
 
+                    b.HasIndex("ProductId");
+
                     b.ToTable("ShoppingCart");
                 });
 
@@ -399,6 +401,12 @@ namespace DrinkWholeSale.Persistence.Migrations
                     b.HasOne("DrinkWholeSale.Persistence.Shopping.Order", null)
                         .WithMany("items")
                         .HasForeignKey("OrderId");
+
+                    b.HasOne("DrinkWholeSale.Persistence.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DrinkWholeSale.Persistence.SubCat", b =>

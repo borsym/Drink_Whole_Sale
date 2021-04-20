@@ -1,4 +1,5 @@
-﻿using DrinkWholeSale.Persistence;
+﻿using DrinkWholeSale.Persistence.Services;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -16,11 +17,14 @@ namespace DrinkWholeSale.Persistence
         public string Name { get; set; }
         public int TotalPrice { get; set; }
         public int TotalGrossPrice { get; set; }
-        public int ProductId { get; set; } // na itt van az hogy melyik termék tartozik hozzá
+        
         public Packaging Pack { get; set; }
 
+        [Required]
+        public int ProductId { get; set; }// na itt van az hogy melyik termék tartozik hozzá
+        public virtual Product Product { get; set; }
         //[ForeignKey("Guest")]
         //public string UserId { get; set; }  //melyik felhasználóhoz tartozik a bevásárlókocsi
-     
+
     }
 }

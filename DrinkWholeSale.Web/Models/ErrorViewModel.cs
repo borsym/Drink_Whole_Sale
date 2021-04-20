@@ -1,6 +1,6 @@
 using System;
 
-namespace DrinkWholeSale.Web.Models
+namespace DrinkWholeSale.Persistence
 {
     public class ErrorViewModel
     {

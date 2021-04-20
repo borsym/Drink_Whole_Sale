@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using DrinkWholeSale.Web.Models;
-using DrinkWholeSale.Web.Services;
+using DrinkWholeSale.Persistence;
+using DrinkWholeSale.Persistence.Services;
 
 using PagedList.Mvc;
 using PagedList;

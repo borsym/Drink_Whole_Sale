@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace DrinkWholeSale.Web.Migrations
+namespace DrinkWholeSale.Persistence.Migrations
 {
     public partial class services_change : Migration
     {

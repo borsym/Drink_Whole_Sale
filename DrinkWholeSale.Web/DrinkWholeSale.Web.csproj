@@ -5,25 +5,6 @@
   </PropertyGroup>
 	
   <ItemGroup>
-    <Compile Remove="Migrations\20210331102015_updated_prod.cs" />
-    <Compile Remove="Migrations\20210331102015_updated_prod.Designer.cs" />
-    <Compile Remove="Migrations\20210331105849_changes.cs" />
-    <Compile Remove="Migrations\20210331105849_changes.Designer.cs" />
-    <Compile Remove="Migrations\20210331110412_changes.cs" />
-    <Compile Remove="Migrations\20210331110412_changes.Designer.cs" />
-    <Compile Remove="Migrations\20210331111731_update.cs" />
-    <Compile Remove="Migrations\20210331111731_update.Designer.cs" />
-    <Compile Remove="Migrations\20210409072346_ads.cs" />
-    <Compile Remove="Migrations\20210409072346_ads.Designer.cs" />
-    <Compile Remove="Migrations\20210409073437_up.cs" />
-    <Compile Remove="Migrations\20210409073437_up.Designer.cs" />
-    <Compile Remove="Migrations\20210409103315_javit.cs" />
-    <Compile Remove="Migrations\20210409103315_javit.Designer.cs" />
-    <Compile Remove="Migrations\20210409114246_akurvaanyad.cs" />
-    <Compile Remove="Migrations\20210409114246_akurvaanyad.Designer.cs" />
-  </ItemGroup>
-	
-  <ItemGroup>
     <Content Include="App_Data\whisky.png" />
   </ItemGroup>
 
@@ -41,6 +22,10 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
     <PackageReference Include="PagedList.Mvc" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DrinkWholeSale.Persistence\DrinkWholeSale.Persistence.csproj" />
   </ItemGroup>
 
 </Project>
