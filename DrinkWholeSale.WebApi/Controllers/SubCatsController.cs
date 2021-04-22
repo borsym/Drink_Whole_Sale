@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DrinkWholeSale.Persistence;
 using DrinkWholeSale.Persistence.Services;
+using DrinkWholeSale.Persistence.DTO;
 
 namespace DrinkWholeSale.WebApi.Controllers
 {
@@ -23,12 +24,12 @@ namespace DrinkWholeSale.WebApi.Controllers
 
         // GET: api/SubCats/6
         [HttpGet("{maincatId}")]
-        public ActionResult<IEnumerable<SubCat>> GetSubCats(int maincatId)
+        public ActionResult<IEnumerable<SubCatDto>> GetSubCats(int maincatId)
         {
             try
             {
                 return _service.GetMainCatById(maincatId)
-                    .SubCats
+                    .SubCats.Select(s => (SubCatDto)s)
                     .ToList();
             }
             catch(Exception)

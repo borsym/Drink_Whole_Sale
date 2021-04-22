@@ -13,48 +13,57 @@ namespace DrinkWholeSale.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MainCatsController : ControllerBase
+    public class ProductsController : ControllerBase
     {
         private readonly IDrinkWholeSaleService _service;
-      
-        public MainCatsController(IDrinkWholeSaleService service)
+
+        public ProductsController(IDrinkWholeSaleService service)
         {
             _service = service;
         }
 
-        // GET: api/MainCats
-        [HttpGet]
-        public ActionResult<IEnumerable<MainCatDto>> GetMainCats()
+        // GET: api/Products    ez lehet hibas lesz
+        [HttpGet("{subcatId}")]
+        public ActionResult<IEnumerable<ProductDto>> GetProducts(int subcatId)
         {
-            return _service.GetMainCats().Select(m => (MainCatDto)m).ToList();
+            try
+            {
+                return _service.GetSubCatById(subcatId)
+                    .Products.Select(s => (ProductDto)s)
+                    .ToList();
+            }
+            catch (Exception)
+            {
+                return NotFound();
+            }
         }
 
-        //// GET: api/MainCats/5
+        // GET: api/Products/5
         //[HttpGet("{id}")]
-        //public async Task<ActionResult<MainCat>> GetMainCat(int id)
+        //public async Task<ActionResult<Product>> GetProduct(int id)
         //{
-        //    var mainCat = await _context.MainCats.FindAsync(id);
+        //    var product = await _context.Products.FindAsync(id);
 
-        //    if (mainCat == null)
+        //    if (product == null)
         //    {
         //        return NotFound();
         //    }
 
-        //    return mainCat;
+        //    return product;
         //}
 
-        //// PUT: api/MainCats/5
+        //// PUT: api/Products/5
         //// To protect from overposting attacks, enable the specific properties you want to bind to, for
         //// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutMainCat(int id, MainCat mainCat)
+        //public async Task<IActionResult> PutProduct(int id, Product product)
         //{
-        //    if (id != mainCat.Id)
+        //    if (id != product.Id)
         //    {
         //        return BadRequest();
         //    }
 
-        //    _context.Entry(mainCat).State = EntityState.Modified;
+        //    _context.Entry(product).State = EntityState.Modified;
 
         //    try
         //    {
@@ -62,7 +71,7 @@ namespace DrinkWholeSale.WebApi.Controllers
         //    }
         //    catch (DbUpdateConcurrencyException)
         //    {
-        //        if (!MainCatExists(id))
+        //        if (!ProductExists(id))
         //        {
         //            return NotFound();
         //        }
@@ -75,37 +84,37 @@ namespace DrinkWholeSale.WebApi.Controllers
         //    return NoContent();
         //}
 
-        //// POST: api/MainCats
+        //// POST: api/Products
         //// To protect from overposting attacks, enable the specific properties you want to bind to, for
         //// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         //[HttpPost]
-        //public async Task<ActionResult<MainCat>> PostMainCat(MainCat mainCat)
+        //public async Task<ActionResult<Product>> PostProduct(Product product)
         //{
-        //    _context.MainCats.Add(mainCat);
+        //    _context.Products.Add(product);
         //    await _context.SaveChangesAsync();
 
-        //    return CreatedAtAction("GetMainCat", new { id = mainCat.Id }, mainCat);
+        //    return CreatedAtAction("GetProduct", new { id = product.Id }, product);
         //}
 
-        //// DELETE: api/MainCats/5
+        //// DELETE: api/Products/5
         //[HttpDelete("{id}")]
-        //public async Task<ActionResult<MainCat>> DeleteMainCat(int id)
+        //public async Task<ActionResult<Product>> DeleteProduct(int id)
         //{
-        //    var mainCat = await _context.MainCats.FindAsync(id);
-        //    if (mainCat == null)
+        //    var product = await _context.Products.FindAsync(id);
+        //    if (product == null)
         //    {
         //        return NotFound();
         //    }
 
-        //    _context.MainCats.Remove(mainCat);
+        //    _context.Products.Remove(product);
         //    await _context.SaveChangesAsync();
 
-        //    return mainCat;
+        //    return product;
         //}
 
-        //private bool MainCatExists(int id)
+        //private bool ProductExists(int id)
         //{
-        //    return _context.MainCats.Any(e => e.Id == id);
+        //    return _context.Products.Any(e => e.Id == id);
         //}
     }
 }
