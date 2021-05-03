@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using DrinkWholeSale.Persistence;
 using DrinkWholeSale.Persistence.Services;
 using DrinkWholeSale.Persistence.DTO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DrinkWholeSale.WebApi.Controllers
 {
@@ -22,8 +23,8 @@ namespace DrinkWholeSale.WebApi.Controllers
             _service = service;
         }
 
-        // GET: api/SubCats/6
-        [HttpGet("{maincatId}")]
+        // GET: api/SubCats/MainCat/6
+        [HttpGet("MainCat/{maincatId}")]
         public ActionResult<IEnumerable<SubCatDto>> GetSubCats(int maincatId)
         {
             try
@@ -38,83 +39,71 @@ namespace DrinkWholeSale.WebApi.Controllers
             }
         }
 
-        //// GET: api/SubCats/5
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<SubCat>> GetSubCat(int id)
-        //{
-        //    var subCat = await _context.SubCats.FindAsync(id);
+        // GET: api/SubCats/5
+        [HttpGet("{id}")]
+        public ActionResult<SubCatDto> GetSubCat(int id)
+        {
+            try
+            {
+                return (SubCatDto)_service.GetSubCatById(id);
+            }
+            catch (InvalidOperationException)
+            {
+                return NotFound();
+            }
+        }
 
-        //    if (subCat == null)
-        //    {
-        //        return NotFound();
-        //    }
+        // PUT: api/SubCats/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [Authorize]
+        [HttpPut("{id}")]
+        public IActionResult PutSubCat(int id, SubCatDto subCat)
+        {
+            if (id != subCat.Id)
+            {
+                return BadRequest();
+            }
 
-        //    return subCat;
-        //}
+            
 
-        //// PUT: api/SubCats/5
-        //// To protect from overposting attacks, enable the specific properties you want to bind to, for
-        //// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutSubCat(int id, SubCat subCat)
-        //{
-        //    if (id != subCat.Id)
-        //    {
-        //        return BadRequest();
-        //    }
+            if (_service.UpdateSubCat((SubCat)subCat))
+                return Ok();
+            
+            
+            return StatusCode(StatusCodes.Status500InternalServerError);
+            
+        }
 
-        //    _context.Entry(subCat).State = EntityState.Modified;
+        // POST: api/SubCats
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [Authorize]
+        [HttpPost]
+        public ActionResult<SubCat> PostSubCat(SubCatDto subCatdto)
+        {
+            var item = _service.CreateSubCat((SubCat)subCatdto);
+            if(item is null)
+               return  StatusCode(StatusCodes.Status500InternalServerError);
 
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!SubCatExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
+            return CreatedAtAction(nameof(GetSubCat), new { id = item.Id }, (SubCatDto)item);
+        }
 
-        //    return NoContent();
-        //}
+        // DELETE: api/SubCats/5
+        [Authorize]
+        [HttpDelete("{id}")]
+        public ActionResult<SubCat> DeleteSubCat(int id)
+        {
+            if (_service.DeleteSubCat(id))
+            {
+                return Ok();
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
 
-        //// POST: api/SubCats
-        //// To protect from overposting attacks, enable the specific properties you want to bind to, for
-        //// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        //[HttpPost]
-        //public async Task<ActionResult<SubCat>> PostSubCat(SubCat subCat)
-        //{
-        //    _context.SubCats.Add(subCat);
-        //    await _context.SaveChangesAsync();
-
-        //    return CreatedAtAction("GetSubCat", new { id = subCat.Id }, subCat);
-        //}
-
-        //// DELETE: api/SubCats/5
-        //[HttpDelete("{id}")]
-        //public async Task<ActionResult<SubCat>> DeleteSubCat(int id)
-        //{
-        //    var subCat = await _context.SubCats.FindAsync(id);
-        //    if (subCat == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    _context.SubCats.Remove(subCat);
-        //    await _context.SaveChangesAsync();
-
-        //    return subCat;
-        //}
-
-        //private bool SubCatExists(int id)
-        //{
-        //    return _context.SubCats.Any(e => e.Id == id);
-        //}
+       
     }
 }

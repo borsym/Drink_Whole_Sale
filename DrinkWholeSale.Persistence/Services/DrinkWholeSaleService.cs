@@ -58,7 +58,48 @@ namespace DrinkWholeSale.Persistence.Services
                 .ToList();
         }
 
+        public bool DeleteMainCat(int id)
+        {
+            var list = _context.MainCats.Find(id);
+            if (list == null)
+            {
+                return false;
+            }
 
+            try
+            {
+                _context.Remove(list);
+                _context.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return false;
+            }
+            catch (DbUpdateException)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public MainCat CreateMainCat(MainCat mainCat)
+        {
+            try
+            {
+                _context.Add(mainCat);
+                _context.SaveChanges();
+            } catch(DbUpdateConcurrencyException)
+            {
+                return null;
+            }
+            catch(DbUpdateException)
+            {
+                return null;
+            }
+
+            return mainCat;
+        }
         public async Task<bool> AddOrder(List<ShoppingCart> list, string userName)
         {
             
@@ -210,8 +251,133 @@ namespace DrinkWholeSale.Persistence.Services
         }
         public IEnumerable<SubCat> SubCats => _context.SubCats.Include(b => b.MainCat);
 
-        //---PRODUCT---
+        public bool UpdateSubCat(SubCat subCat)
+        {
+            try
+            {
+                _context.Update(subCat);
+                _context.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return false;
+            }
+            catch (DbUpdateException)
+            {
+                return false;
+            }
 
+            return true;
+        }
+        public SubCat CreateSubCat(SubCat subCatdto)
+        {
+            try
+            {
+                _context.Add(subCatdto);
+                _context.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return null;
+            }
+            catch (DbUpdateException)
+            {
+                return null;
+            }
+
+            return subCatdto;
+        }
+
+        public bool DeleteSubCat(int id)
+        {
+            var item = _context.SubCats.Find(id);
+            if (item == null)
+            {
+                return false;
+            }
+
+            try
+            {
+                _context.Remove(item);
+                _context.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return false;
+            }
+            catch (DbUpdateException)
+            {
+                return false;
+            }
+
+            return true;
+
+        }
+
+        public bool UpdateItem(Product product)
+        {
+            try
+            {
+                _context.Update(product);
+                if (product.Image == null)
+                {
+                    _context.Entry(product).Property("Image").IsModified = false;
+                }
+                _context.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return false;
+            }
+            catch (DbUpdateException)
+            {
+                return false;
+            }
+
+            return true;
+        }
+        //---PRODUCT---
+        public Product CreateProduct(Product product)
+        {
+            try
+            {
+                _context.Add(product);
+                _context.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return null;
+            }
+            catch (DbUpdateException)
+            {
+                return null;
+            }
+
+            return product;
+        }
+
+        public bool DeleteProduct(int id)
+        {
+            var item = _context.Products.Find(id);
+            if (item == null)
+                return false;
+            
+            try
+            {
+                _context.Remove(item);
+                _context.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return false;
+            }
+            catch (DbUpdateException)
+            {
+                return false;
+            }
+
+            return true;
+        }
         public List<Product> GetProductBySubCatId(int id)  // itt esetleg lehet egy olyan, hogy maincategóriából jövök és include, include then
         {
             return _context.SubCats

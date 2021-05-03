@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using DrinkWholeSale.Persistence;
 using DrinkWholeSale.Persistence.Services;
 using DrinkWholeSale.Persistence.DTO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DrinkWholeSale.WebApi.Controllers
 {
@@ -22,8 +23,8 @@ namespace DrinkWholeSale.WebApi.Controllers
             _service = service;
         }
 
-        // GET: api/Products    ez lehet hibas lesz
-        [HttpGet("{subcatId}")]
+        // GET: api/Products/Subcat    ez lehet hibas lesz
+        [HttpGet("SubCat/{subcatId}")]
         public ActionResult<IEnumerable<ProductDto>> GetProducts(int subcatId)
         {
             try
@@ -38,83 +39,66 @@ namespace DrinkWholeSale.WebApi.Controllers
             }
         }
 
-        // GET: api/Products/5
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<Product>> GetProduct(int id)
-        //{
-        //    var product = await _context.Products.FindAsync(id);
+        //GET: api/Products/5
+        [HttpGet("{id}")]
+        public ActionResult<ProductDto> GetProduct(int id)
+        {
+            try
+            {
+                return (ProductDto)_service.GetProductById(id);
+            }
+            catch (InvalidOperationException)
+            {
 
-        //    if (product == null)
-        //    {
-        //        return NotFound();
-        //    }
+                return NotFound();
+            }
+        }
 
-        //    return product;
-        //}
+        // PUT: api/Products/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [Authorize]
+        [HttpPut("{id}")]
+        public IActionResult PutProduct(int id, Product product)
+        {
+            if (id != product.Id)
+            {
+                return BadRequest();
+            }
 
-        //// PUT: api/Products/5
-        //// To protect from overposting attacks, enable the specific properties you want to bind to, for
-        //// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutProduct(int id, Product product)
-        //{
-        //    if (id != product.Id)
-        //    {
-        //        return BadRequest();
-        //    }
+            if (_service.UpdateItem((Product)product))
+            {
+                return Ok();
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
 
-        //    _context.Entry(product).State = EntityState.Modified;
+        // POST: api/Products
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [Authorize]
+        [HttpPost]
+        public ActionResult<Product> PostProduct(Product product)
+        {
+            var item = _service.CreateProduct((Product)product);
+            if (item is null)
+                return StatusCode(StatusCodes.Status500InternalServerError);
 
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!ProductExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
+            return CreatedAtAction(nameof(GetProduct), new { id = item.Id }, (ProductDto)item);
+        }
 
-        //    return NoContent();
-        //}
-
-        //// POST: api/Products
-        //// To protect from overposting attacks, enable the specific properties you want to bind to, for
-        //// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        //[HttpPost]
-        //public async Task<ActionResult<Product>> PostProduct(Product product)
-        //{
-        //    _context.Products.Add(product);
-        //    await _context.SaveChangesAsync();
-
-        //    return CreatedAtAction("GetProduct", new { id = product.Id }, product);
-        //}
-
-        //// DELETE: api/Products/5
-        //[HttpDelete("{id}")]
-        //public async Task<ActionResult<Product>> DeleteProduct(int id)
-        //{
-        //    var product = await _context.Products.FindAsync(id);
-        //    if (product == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    _context.Products.Remove(product);
-        //    await _context.SaveChangesAsync();
-
-        //    return product;
-        //}
-
-        //private bool ProductExists(int id)
-        //{
-        //    return _context.Products.Any(e => e.Id == id);
-        //}
+        // DELETE: api/Products/5
+        [HttpDelete("{id}")]
+        public ActionResult DeleteProduct(int id)
+        {
+            if (_service.DeleteProduct(id))
+                return Ok();
+            
+            return StatusCode(StatusCodes.Status500InternalServerError);
+            
+        }
     }
 }

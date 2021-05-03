@@ -71,15 +71,11 @@ namespace DrinkWholeSale.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                bool result =  _service.AddMainCat(mainCat);
-                if(result)
-                {
-                    return RedirectToAction(nameof(Index));
-                }
-                else
-                {
+                var result =  _service.CreateMainCat(mainCat);
+                if(result != null)
                     return NotFound();
-                }
+                
+                return RedirectToAction(nameof(Index));
             }
             return View(mainCat);
         }

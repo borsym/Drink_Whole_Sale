@@ -29,83 +29,61 @@ namespace DrinkWholeSale.WebApi.Controllers
             return _service.GetMainCats().Select(m => (MainCatDto)m).ToList();
         }
 
-        //// GET: api/MainCats/5
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<MainCat>> GetMainCat(int id)
-        //{
-        //    var mainCat = await _context.MainCats.FindAsync(id);
+        // GET: api/MainCats/5
+        [HttpGet("{id}")]
+        public ActionResult<MainCatDto> GetMainCat(int id)
+        {
+            try
+            {
+                return (MainCatDto) _service.GetMainCatById(id);
+            }
+            catch (InvalidOperationException)
+            {
+                return NotFound();
+            }
+        }
 
-        //    if (mainCat == null)
-        //    {
-        //        return NotFound();
-        //    }
+        // PUT: api/MainCats/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [HttpPut("{id}")]
+        public IActionResult PutMainCat(int id, MainCatDto mainCat)
+        {
+            if (id != mainCat.Id)
+            {
+                return BadRequest();
+            }
 
-        //    return mainCat;
-        //}
+            if (_service.UpdateMainCat((MainCat)mainCat))
+                return Ok();
+          
 
-        //// PUT: api/MainCats/5
-        //// To protect from overposting attacks, enable the specific properties you want to bind to, for
-        //// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutMainCat(int id, MainCat mainCat)
-        //{
-        //    if (id != mainCat.Id)
-        //    {
-        //        return BadRequest();
-        //    }
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
 
-        //    _context.Entry(mainCat).State = EntityState.Modified;
+        // POST: api/MainCats
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [HttpPost]
+        public ActionResult<MainCat> PostMainCat(MainCatDto mainCat)
+        {
+            var maincat = _service.CreateMainCat((MainCat)mainCat);
+            if(maincat == null) return StatusCode(StatusCodes.Status500InternalServerError);
 
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!MainCatExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
+            return CreatedAtAction("GetMainCat", new { id = maincat.Id }, (MainCatDto)maincat);
+        }
 
-        //    return NoContent();
-        //}
+        // DELETE: api/MainCats/5
+        [HttpDelete("{id}")]
+        public IActionResult DeleteMainCat(int id)
+        {
+            if (_service.DeleteMainCat(id))
+                return Ok();
 
-        //// POST: api/MainCats
-        //// To protect from overposting attacks, enable the specific properties you want to bind to, for
-        //// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        //[HttpPost]
-        //public async Task<ActionResult<MainCat>> PostMainCat(MainCat mainCat)
-        //{
-        //    _context.MainCats.Add(mainCat);
-        //    await _context.SaveChangesAsync();
 
-        //    return CreatedAtAction("GetMainCat", new { id = mainCat.Id }, mainCat);
-        //}
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
 
-        //// DELETE: api/MainCats/5
-        //[HttpDelete("{id}")]
-        //public async Task<ActionResult<MainCat>> DeleteMainCat(int id)
-        //{
-        //    var mainCat = await _context.MainCats.FindAsync(id);
-        //    if (mainCat == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    _context.MainCats.Remove(mainCat);
-        //    await _context.SaveChangesAsync();
-
-        //    return mainCat;
-        //}
-
-        //private bool MainCatExists(int id)
-        //{
-        //    return _context.MainCats.Any(e => e.Id == id);
-        //}
+        
     }
 }

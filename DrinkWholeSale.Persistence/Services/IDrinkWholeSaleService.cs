@@ -32,9 +32,18 @@ namespace DrinkWholeSale.Persistence.Services
 
 
         public Product GetProductById(int? id);
-      //  void AddItemShoppingCart(ShoppingCart cartItem);
-     //  void RemoveItemShoppingCart(ShoppingCart cartItem);
-       // ShoppingCart GetShoppingCartProduct(int id);
+        bool DeleteMainCat(int id);
+        MainCat CreateMainCat(MainCat mainCat);
+        bool UpdateSubCat(SubCat subCat);
+        SubCat CreateSubCat(SubCat subCatdto);
+        bool DeleteSubCat(int id);
+        bool UpdateItem(Product product);
+        Product CreateProduct(Product product);
+        bool DeleteProduct(int id);
+
+        //  void AddItemShoppingCart(ShoppingCart cartItem);
+        //  void RemoveItemShoppingCart(ShoppingCart cartItem);
+        // ShoppingCart GetShoppingCartProduct(int id);
         //ShoppingCart GetShoppingCartById(int id);
 
     }

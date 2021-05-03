@@ -62,7 +62,7 @@ namespace DrinkWholeSale.Desktop.Model
 
         public async Task<IEnumerable<SubCatDto>> LoadSubCatsAsync(int subcatId)
         {
-            var response = await _client.GetAsync($"api/SubCats/{subcatId}");  // jol írtam?
+            var response = await _client.GetAsync($"api/SubCats/MainCat/{subcatId}");  // jol írtam?
 
             if (response.IsSuccessStatusCode)
             {
@@ -73,7 +73,7 @@ namespace DrinkWholeSale.Desktop.Model
         }
         public async Task<IEnumerable<ProductDto>> LoadProductAsync(int productId)
         {
-            var response = await _client.GetAsync($"api/Products/{productId}");  // jol írtam?
+            var response = await _client.GetAsync($"api/Products/SubCat/{productId}");  // jol írtam?
 
             if (response.IsSuccessStatusCode)
             {
