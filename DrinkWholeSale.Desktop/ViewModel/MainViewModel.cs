@@ -37,18 +37,34 @@ namespace DrinkWholeSale.Desktop.ViewModel
         public DelegateCommand LogoutCommand { get; private set; }
         public DelegateCommand SelectCommand { get; private set; }
         public DelegateCommand SelectCommand2 { get; private set; } // ez így??
+        public event EventHandler LogoutSucceeded;
 
         public MainViewModel(DrinkWholeSaleApiService service)
         {
             _service = service;
 
-            RefreshListsCommand = new DelegateCommand(_ => LogoutAsync());
+            RefreshListsCommand = new DelegateCommand(_ => LoadMainCatsAsync());
             LogoutCommand = new DelegateCommand(_ => LogoutAsync());
             SelectCommand = new DelegateCommand(param => LoadSubCatsAsync(param as MainCatDto));
             SelectCommand2 = new DelegateCommand(param => LoadProductAsync(param as SubCatDto));
         }
 
         private async void LogoutAsync()
+        {
+            try
+            {
+               await _service.LogoutAsync();
+               LogoutSucceeded?.Invoke(this, EventArgs.Empty);
+                
+            }
+            catch (Exception ex) when (ex is NetworkException || ex is HttpRequestException)
+            {
+                OnMessageApplication($"Unexpected error occured! ({ex.Message})");
+            }
+           
+        }
+
+        private async void LoadMainCatsAsync()
         {
             try
             {

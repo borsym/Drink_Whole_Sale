@@ -32,5 +32,12 @@ namespace DrinkWholeSale.WebApi.Controllers
 
             return Unauthorized("Login faild!");
         }
+        //api/Account/Logout
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return Ok();
+        }
     }
 }

@@ -36,6 +36,17 @@ namespace DrinkWholeSale.Desktop.Model
         /*
          Ide még lehet fel kell venni 2 új dolgot (subcathez ugyan ez a kezdő metódus
          */
+        public async Task LogoutAsync()
+        {
+            var response = await _client.PostAsync("api/Account/Logout" ,null);  // jol írtam?
+
+            if (response.IsSuccessStatusCode)
+            {
+                return;
+            }
+
+            throw new NetworkException("Service returned respsone: " + response.StatusCode);
+        }
 
         public async Task<IEnumerable<MainCatDto>> LoadMainCatsAsync()
         {

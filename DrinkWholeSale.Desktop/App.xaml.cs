@@ -42,6 +42,7 @@ namespace DrinkWholeSale.Desktop
             };
 
             _mainViewModel = new MainViewModel(_service);
+            _mainViewModel.LogoutSucceeded += _mainViewModel_LogutSucceeded;
             _mainViewModel.MessageApplication += _mainViewModel_Message;
 
             _view = new MainWindow
@@ -52,7 +53,11 @@ namespace DrinkWholeSale.Desktop
             _loginView.Show();
         }
 
-       
+        private void _mainViewModel_LogutSucceeded(object sender, EventArgs e)
+        {
+            _view.Hide();
+            _loginView.Show();
+        }
 
         private void _loginViewModel_LoginFailed(object sender, EventArgs e)
         {
