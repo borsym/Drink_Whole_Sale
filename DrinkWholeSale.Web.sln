@@ -5,9 +5,11 @@ VisualStudioVersion = 16.0.31025.194
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DrinkWholeSale.Web", "DrinkWholeSale.Web\DrinkWholeSale.Web.csproj", "{6F2BF069-BAB9-40D1-A843-193567840BBD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrinkWholeSale.Persistence", "DrinkWholeSale.Persistence\DrinkWholeSale.Persistence.csproj", "{E4C0B21D-4513-40BB-9844-23E22B1D500D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DrinkWholeSale.Persistence", "DrinkWholeSale.Persistence\DrinkWholeSale.Persistence.csproj", "{E4C0B21D-4513-40BB-9844-23E22B1D500D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrinkWholeSale.WebApi", "DrinkWholeSale.WebApi\DrinkWholeSale.WebApi.csproj", "{D29D6A3A-5FC1-4283-8B2A-D286B73CAEF9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DrinkWholeSale.WebApi", "DrinkWholeSale.WebApi\DrinkWholeSale.WebApi.csproj", "{D29D6A3A-5FC1-4283-8B2A-D286B73CAEF9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrinkWholeSale.Desktop", "DrinkWholeSale.Desktop\DrinkWholeSale.Desktop.csproj", "{D5BE9D5C-0AAA-48D3-B923-A84D9D8982C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{D29D6A3A-5FC1-4283-8B2A-D286B73CAEF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D29D6A3A-5FC1-4283-8B2A-D286B73CAEF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D29D6A3A-5FC1-4283-8B2A-D286B73CAEF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5BE9D5C-0AAA-48D3-B923-A84D9D8982C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5BE9D5C-0AAA-48D3-B923-A84D9D8982C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5BE9D5C-0AAA-48D3-B923-A84D9D8982C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5BE9D5C-0AAA-48D3-B923-A84D9D8982C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
