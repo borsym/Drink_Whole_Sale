@@ -1,14 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DrinkWholeSale.Persistence;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
-namespace DrinkWholeSale.Persistence
+namespace DrinkWholeSale.WebApi.Tests
 {
-   
-    public class DbInitializer
+    public class TestDbInitializer
     {
         public static Packaging getPacking(int quant)
         {
@@ -21,33 +18,26 @@ namespace DrinkWholeSale.Persistence
 
             return Packaging.PIECE;
         }
-        public static void Initialize(DrinkWholeSaleDbContext context, string imageDirectory)
+
+        public static void Initialize(DrinkWholeSaleDbContext context)
         {
-            context.Database.Migrate();// ideiglenesen cserélve
-            //context.Database.EnsureDeleted();
-            //context.Database.EnsureCreated();
+            context.Database.EnsureCreated();
 
             if (context.MainCats.Any()) return;
 
-            var orangePath = Path.Combine(imageDirectory, "narancsle.png");
-            var waterPath = Path.Combine(imageDirectory, "viz.png");
-            var vodkaPath = Path.Combine(imageDirectory, "vodka.png");
-            var whiskyPath = Path.Combine(imageDirectory, "whisky.png");
-            var szen_vizPath = Path.Combine(imageDirectory, "szen_viz.png");
-            var royal_vodkaPath = Path.Combine(imageDirectory, "royal_vodka.png");
-            var narancs_sioPath = Path.Combine(imageDirectory, "narancs_sio.png");
-            var jim_bimPath = Path.Combine(imageDirectory, "jim_bim.png");
+       
 
-            
             IList<MainCat> defaultLists = new List<MainCat>()
             {
                 new MainCat
                 {
+                    Id = 1,
                     Name = "Alcoholic drinks",
                     SubCats = new List<SubCat>
                     {
                         new SubCat
                         {
+                            Id = 1,
                             Name = "Vodka",
                             Products = new List<Product>
                             {
@@ -61,7 +51,6 @@ namespace DrinkWholeSale.Persistence
                                     Description = "This will take you to the floor",
                                     Quantity = 5,
                                     Pack = getPacking(5),
-                                    Image = File.Exists(royal_vodkaPath) ? File.ReadAllBytes(royal_vodkaPath) : null
                                 },
                                  new Product
                                 {
@@ -71,7 +60,6 @@ namespace DrinkWholeSale.Persistence
                                     NetPrice = 1500,
                                     GrossPrice = 1905,
                                     Description = "Very good product",
-                                    Image = File.Exists(vodkaPath) ? File.ReadAllBytes(vodkaPath) : null,
                                     Quantity = 90,
                                     Pack = getPacking(90)
                                 },
@@ -79,6 +67,7 @@ namespace DrinkWholeSale.Persistence
                         },
                         new SubCat
                         {
+                            Id = 2,
                             Name = "Whisky",
                             Products = new List<Product>
                             {
@@ -90,7 +79,6 @@ namespace DrinkWholeSale.Persistence
                                     NetPrice = 1000,
                                     GrossPrice = 1270,
                                     Description = "Smooth taste",
-                                    Image = File.Exists(jim_bimPath) ? File.ReadAllBytes(jim_bimPath) : null,
                                     Quantity = 2000,
                                     Pack = getPacking(2000)
                                 },
@@ -102,7 +90,6 @@ namespace DrinkWholeSale.Persistence
                                     NetPrice = 1500,
                                     GrossPrice = 1905,
                                     Description = "Smooth taste",
-                                    Image = File.Exists(whiskyPath) ? File.ReadAllBytes(whiskyPath) : null,
                                     Quantity = 13,
                                     Pack = getPacking(13)
                                 },
@@ -114,7 +101,6 @@ namespace DrinkWholeSale.Persistence
                                     NetPrice = 1000,
                                     GrossPrice = 1270,
                                     Description = "Smooth taste",
-                                    Image = File.Exists(jim_bimPath) ? File.ReadAllBytes(jim_bimPath) : null,
                                     Quantity = 2000,
                                     Pack = getPacking(2000)
                                 },
@@ -126,7 +112,6 @@ namespace DrinkWholeSale.Persistence
                                     NetPrice = 1500,
                                     GrossPrice = 1905,
                                     Description = "Smooth taste",
-                                    Image = File.Exists(whiskyPath) ? File.ReadAllBytes(whiskyPath) : null,
                                     Quantity = 13,
                                     Pack = getPacking(13)
                                 },
@@ -138,7 +123,6 @@ namespace DrinkWholeSale.Persistence
                                     NetPrice = 1000,
                                     GrossPrice = 1270,
                                     Description = "Smooth taste",
-                                    Image = File.Exists(jim_bimPath) ? File.ReadAllBytes(jim_bimPath) : null,
                                     Quantity = 2000,
                                     Pack = getPacking(2000)
                                 },
@@ -150,7 +134,6 @@ namespace DrinkWholeSale.Persistence
                                     NetPrice = 1500,
                                     GrossPrice = 1905,
                                     Description = "Smooth taste",
-                                    Image = File.Exists(whiskyPath) ? File.ReadAllBytes(whiskyPath) : null,
                                     Quantity = 13,
                                     Pack = getPacking(13)
                                 },
@@ -162,7 +145,6 @@ namespace DrinkWholeSale.Persistence
                                     NetPrice = 1000,
                                     GrossPrice = 1270,
                                     Description = "Smooth taste",
-                                    Image = File.Exists(jim_bimPath) ? File.ReadAllBytes(jim_bimPath) : null,
                                     Quantity = 2000,
                                     Pack = getPacking(2000)
                                 },
@@ -174,7 +156,6 @@ namespace DrinkWholeSale.Persistence
                                     NetPrice = 1500,
                                     GrossPrice = 1905,
                                     Description = "Smooth taste",
-                                    Image = File.Exists(whiskyPath) ? File.ReadAllBytes(whiskyPath) : null,
                                     Quantity = 13,
                                     Pack = getPacking(13)
                                 },
@@ -186,7 +167,6 @@ namespace DrinkWholeSale.Persistence
                                     NetPrice = 1000,
                                     GrossPrice = 1270,
                                     Description = "very Smooth taste",
-                                    Image = File.Exists(jim_bimPath) ? File.ReadAllBytes(jim_bimPath) : null,
                                     Quantity = 2000,
                                     Pack = getPacking(2000)
                                 },
@@ -198,7 +178,6 @@ namespace DrinkWholeSale.Persistence
                                     NetPrice = 1500,
                                     GrossPrice = 1905,
                                     Description = "Smooth taste",
-                                    Image = File.Exists(whiskyPath) ? File.ReadAllBytes(whiskyPath) : null,
                                     Quantity = 13,
                                     Pack = getPacking(13)
                                 },
@@ -210,7 +189,6 @@ namespace DrinkWholeSale.Persistence
                                     NetPrice = 1000,
                                     GrossPrice = 1270,
                                     Description = "Smooth taste",
-                                    Image = File.Exists(jim_bimPath) ? File.ReadAllBytes(jim_bimPath) : null,
                                     Quantity = 2000,
                                     Pack = getPacking(2000)
                                 },
@@ -222,7 +200,6 @@ namespace DrinkWholeSale.Persistence
                                     NetPrice = 1500,
                                     GrossPrice = 1905,
                                     Description = "Smooth taste",
-                                    Image = File.Exists(whiskyPath) ? File.ReadAllBytes(whiskyPath) : null,
                                     Quantity = 13,
                                     Pack = getPacking(13)
                                 },
@@ -234,7 +211,6 @@ namespace DrinkWholeSale.Persistence
                                     NetPrice = 1000,
                                     GrossPrice = 1270,
                                     Description = "Smooth tastem",
-                                    Image = File.Exists(jim_bimPath) ? File.ReadAllBytes(jim_bimPath) : null,
                                     Quantity = 2000,
                                     Pack = getPacking(2000)
                                 },
@@ -246,7 +222,6 @@ namespace DrinkWholeSale.Persistence
                                     NetPrice = 1500,
                                     GrossPrice = 1905,
                                     Description = "Smooth taste",
-                                    Image = File.Exists(whiskyPath) ? File.ReadAllBytes(whiskyPath) : null,
                                     Quantity = 13,
                                     Pack = getPacking(13)
                                 },
@@ -258,7 +233,6 @@ namespace DrinkWholeSale.Persistence
                                     NetPrice = 1000,
                                     GrossPrice = 1270,
                                     Description = "Smooth taste",
-                                    Image = File.Exists(jim_bimPath) ? File.ReadAllBytes(jim_bimPath) : null,
                                     Quantity = 2000,
                                     Pack = getPacking(2000)
                                 },
@@ -270,7 +244,6 @@ namespace DrinkWholeSale.Persistence
                                     NetPrice = 1500,
                                     GrossPrice = 1905,
                                     Description = "Smooth taste",
-                                    Image = File.Exists(whiskyPath) ? File.ReadAllBytes(whiskyPath) : null,
                                     Quantity = 13,
                                     Pack = getPacking(13)
                                 },
@@ -282,7 +255,6 @@ namespace DrinkWholeSale.Persistence
                                     NetPrice = 1000,
                                     GrossPrice = 1270,
                                     Description = "Smooth taste",
-                                    Image = File.Exists(jim_bimPath) ? File.ReadAllBytes(jim_bimPath) : null,
                                     Quantity = 2000,
                                     Pack = getPacking(2000)
                                 },
@@ -294,7 +266,6 @@ namespace DrinkWholeSale.Persistence
                                     NetPrice = 1500,
                                     GrossPrice = 1905,
                                     Description = "Smooth taste",
-                                    Image = File.Exists(whiskyPath) ? File.ReadAllBytes(whiskyPath) : null,
                                     Quantity = 13,
                                     Pack = getPacking(13)
                                 },
@@ -306,7 +277,6 @@ namespace DrinkWholeSale.Persistence
                                     NetPrice = 1000,
                                     GrossPrice = 1270,
                                     Description = "Smooth taste",
-                                    Image = File.Exists(jim_bimPath) ? File.ReadAllBytes(jim_bimPath) : null,
                                     Quantity = 2000,
                                     Pack = getPacking(2000)
                                 },
@@ -318,7 +288,6 @@ namespace DrinkWholeSale.Persistence
                                     NetPrice = 1500,
                                     GrossPrice = 1905,
                                     Description = "Smooth taste",
-                                    Image = File.Exists(whiskyPath) ? File.ReadAllBytes(whiskyPath) : null,
                                     Quantity = 13,
                                     Pack = getPacking(13)
                                 },
@@ -330,7 +299,6 @@ namespace DrinkWholeSale.Persistence
                                     NetPrice = 1000,
                                     GrossPrice = 1270,
                                     Description = "Smooth taste",
-                                    Image = File.Exists(jim_bimPath) ? File.ReadAllBytes(jim_bimPath) : null,
                                     Quantity = 2000,
                                     Pack = getPacking(2000)
                                 },
@@ -342,7 +310,6 @@ namespace DrinkWholeSale.Persistence
                                     NetPrice = 1500,
                                     GrossPrice = 1905,
                                     Description = "Smooth taste",
-                                    Image = File.Exists(whiskyPath) ? File.ReadAllBytes(whiskyPath) : null,
                                     Quantity = 13,
                                     Pack = getPacking(13)
                                 },
@@ -354,7 +321,6 @@ namespace DrinkWholeSale.Persistence
                                     NetPrice = 1000,
                                     GrossPrice = 1270,
                                     Description = "Smooth taste",
-                                    Image =  File.Exists(whiskyPath) ? File.ReadAllBytes(whiskyPath) : null,
                                     Quantity = 2000,
                                     Pack = getPacking(2000)
                                 },
@@ -366,7 +332,6 @@ namespace DrinkWholeSale.Persistence
                                     NetPrice = 1500,
                                     GrossPrice = 1905,
                                     Description = "Adom adom",
-                                    Image =   File.Exists(whiskyPath) ? File.ReadAllBytes(whiskyPath) : null,
                                     Quantity = 13,
                                     Pack = getPacking(13)
                                 },
@@ -378,7 +343,6 @@ namespace DrinkWholeSale.Persistence
                                     NetPrice = 1000,
                                     GrossPrice = 1270,
                                     Description = "Smooth taste",
-                                    Image =   File.Exists(whiskyPath) ? File.ReadAllBytes(whiskyPath) : null,
                                     Quantity = 2000,
                                     Pack = getPacking(2000)
                                 },
@@ -390,7 +354,6 @@ namespace DrinkWholeSale.Persistence
                                     NetPrice = 1500,
                                     GrossPrice = 1905,
                                     Description = "Smooth taste",
-                                    Image =  File.Exists(whiskyPath) ? File.ReadAllBytes(whiskyPath) : null,
                                     Quantity = 13,
                                     Pack = getPacking(13)
                                 },
@@ -402,106 +365,10 @@ namespace DrinkWholeSale.Persistence
                                     NetPrice = 1000,
                                     GrossPrice = 1270,
                                     Description = "Smooth taste",
-                                    Image =   File.Exists(whiskyPath) ? File.ReadAllBytes(whiskyPath) : null,
                                     Quantity = 2000,
                                     Pack = getPacking(2000)
                                 },
-                                 new Product
-                                {
-                                    Name = "Whisky Jack",
-                                    Producer = "Nagy Pias Kft",
-                                    TypeNumber = 4,
-                                    NetPrice = 1500,
-                                    GrossPrice = 1905,
-                                    Description = "Smooth taste",
-                                    Image =  File.Exists(whiskyPath) ? File.ReadAllBytes(whiskyPath) : null,
-                                    Quantity = 13,
-                                    Pack = getPacking(13)
-                                },
-                                  new Product
-                                {
-                                    Name = "Jim Whisky",
-                                    Producer = "Pias Kft",
-                                    TypeNumber = 3,
-                                    NetPrice = 1000,
-                                    GrossPrice = 1270,
-                                    Description = "Smooth taste",
-                                    Image =   File.Exists(whiskyPath) ? File.ReadAllBytes(whiskyPath) : null,
-                                    Quantity = 2000,
-                                    Pack = getPacking(2000)
-                                },
-                                 new Product
-                                {
-                                    Name = "Whisky Jack",
-                                    Producer = "Nagy Pias Kft",
-                                    TypeNumber = 4,
-                                    NetPrice = 1500,
-                                    GrossPrice = 1905,
-                                    Description = "Smooth taste",
-                                    Image =  File.Exists(whiskyPath) ? File.ReadAllBytes(whiskyPath) : null,
-                                    Quantity = 13,
-                                    Pack = getPacking(13)
-                                },
-                                  new Product
-                                {
-                                    Name = "Jim Whisky",
-                                    Producer = "Pias Kft",
-                                    TypeNumber = 3,
-                                    NetPrice = 1000,
-                                    GrossPrice = 1270,
-                                    Description = "Smooth taste",
-                                    Image =   File.Exists(whiskyPath) ? File.ReadAllBytes(whiskyPath) : null,
-                                    Quantity = 2000,
-                                    Pack = getPacking(2000)
-                                },
-                                 new Product
-                                {
-                                    Name = "Whisky Jack",
-                                    Producer = "Nagy Pias Kft",
-                                    TypeNumber = 4,
-                                    NetPrice = 1500,
-                                    GrossPrice = 1905,
-                                    Description = "Smooth taste",
-                                    Image =  File.Exists(whiskyPath) ? File.ReadAllBytes(whiskyPath) : null,
-                                    Quantity = 13,
-                                    Pack = getPacking(13)
-                                },
-                                  new Product
-                                {
-                                    Name = "Jim Whisky",
-                                    Producer = "Pias Kft",
-                                    TypeNumber = 3,
-                                    NetPrice = 1000,
-                                    GrossPrice = 1270,
-                                    Description = "Smooth taste",
-                                    Image =  File.Exists(whiskyPath) ? File.ReadAllBytes(whiskyPath) : null,
-                                    Quantity = 2000,
-                                    Pack = getPacking(2000)
-                                },
-                                 new Product
-                                {
-                                    Name = "Whisky Jack",
-                                    Producer = "Nagy Pias Kft",
-                                    TypeNumber = 4,
-                                    NetPrice = 1500,
-                                    GrossPrice = 1905,
-                                    Description = "Smooth taste",
-                                    Image =   File.Exists(whiskyPath) ? File.ReadAllBytes(whiskyPath) : null,
-                                    Quantity = 13,
-                                    Pack = getPacking(13)
-                                },
-                                  new Product
-                                {
-                                    Name = "Jim Whisky",
-                                    Producer = "Pias Kft",
-                                    TypeNumber = 3,
-                                    NetPrice = 1000,
-                                    GrossPrice = 1270,
-                                    Description = "Smooth taste",
-                                    Image =   File.Exists(whiskyPath) ? File.ReadAllBytes(whiskyPath) : null,
-                                    Quantity = 2000,
-                                    Pack = getPacking(2000)
-                                },
+                             
                                  new Product
                                 {
                                     Name = "Whisky Jack",
@@ -510,151 +377,6 @@ namespace DrinkWholeSale.Persistence
                                     NetPrice = 1500,
                                     GrossPrice = 1905,
                                     Description = "Adom adom",
-                                    Image =   File.Exists(whiskyPath) ? File.ReadAllBytes(whiskyPath) : null,
-                                    Quantity = 13,
-                                    Pack = getPacking(13)
-                                },
-                                  new Product
-                                {
-                                    Name = "Jim Whisky",
-                                    Producer = "Pias Kft",
-                                    TypeNumber = 3,
-                                    NetPrice = 1000,
-                                    GrossPrice = 1270,
-                                    Description = "Smooth taste",
-                                    Image =   File.Exists(whiskyPath) ? File.ReadAllBytes(whiskyPath) : null,
-                                    Quantity = 2000,
-                                    Pack = getPacking(2000)
-                                },
-                                 new Product
-                                {
-                                    Name = "Whisky Jack",
-                                    Producer = "Nagy Pias Kft",
-                                    TypeNumber = 4,
-                                    NetPrice = 1500,
-                                    GrossPrice = 1905,
-                                    Description = "Adom adom",
-                                    Image =   File.Exists(whiskyPath) ? File.ReadAllBytes(whiskyPath) : null,
-                                    Quantity = 13,
-                                    Pack = getPacking(13)
-                                },
-                                  new Product
-                                {
-                                    Name = "Jim Whisky",
-                                    Producer = "Pias Kft",
-                                    TypeNumber = 3,
-                                    NetPrice = 1000,
-                                    GrossPrice = 1270,
-                                    Description = "Smooth taste",
-                                    Image =   File.Exists(whiskyPath) ? File.ReadAllBytes(whiskyPath) : null,
-                                    Quantity = 2000,
-                                    Pack = getPacking(2000)
-                                },
-                                 new Product
-                                {
-                                    Name = "Whisky Jack",
-                                    Producer = "Nagy Pias Kft",
-                                    TypeNumber = 4,
-                                    NetPrice = 1500,
-                                    GrossPrice = 1905,
-                                    Description = "Adom adom",
-                                    Image =   File.Exists(whiskyPath) ? File.ReadAllBytes(whiskyPath) : null,
-                                    Quantity = 13,
-                                    Pack = getPacking(13)
-                                },
-                                  new Product
-                                {
-                                    Name = "Jim Whisky",
-                                    Producer = "Pias Kft",
-                                    TypeNumber = 3,
-                                    NetPrice = 1000,
-                                    GrossPrice = 1270,
-                                    Description = "Smooth taste",
-                                    Image =  File.Exists(whiskyPath) ? File.ReadAllBytes(whiskyPath) : null,
-                                    Quantity = 2000,
-                                    Pack = getPacking(2000)
-                                },
-                                 new Product
-                                {
-                                    Name = "Whisky Jack",
-                                    Producer = "Nagy Pias Kft",
-                                    TypeNumber = 4,
-                                    NetPrice = 1500,
-                                    GrossPrice = 1905,
-                                    Description = "Smooth taste",
-                                    Image = File.Exists(whiskyPath) ? File.ReadAllBytes(whiskyPath) : null,
-                                    Quantity = 13,
-                                    Pack = getPacking(13)
-                                },
-                                  new Product
-                                {
-                                    Name = "Jim Whisky",
-                                    Producer = "Pias Kft",
-                                    TypeNumber = 3,
-                                    NetPrice = 1000,
-                                    GrossPrice = 1270,
-                                    Description = "Smooth taste",
-                                    Image =  File.Exists(whiskyPath) ? File.ReadAllBytes(whiskyPath) : null,
-                                    Quantity = 2000,
-                                    Pack = getPacking(2000)
-                                },
-                                 new Product
-                                {
-                                    Name = "Whisky Jack",
-                                    Producer = "Nagy Pias Kft",
-                                    TypeNumber = 4,
-                                    NetPrice = 1500,
-                                    GrossPrice = 1905,
-                                    Description = "Adom adom",
-                                    Image =  File.Exists(whiskyPath) ? File.ReadAllBytes(whiskyPath) : null,
-                                    Quantity = 13,
-                                    Pack = getPacking(13)
-                                },
-                                  new Product
-                                {
-                                    Name = "Jim Whisky",
-                                    Producer = "Pias Kft",
-                                    TypeNumber = 3,
-                                    NetPrice = 1000,
-                                    GrossPrice = 1270,
-                                    Description = "Smooth taste",
-                                    Image =   File.Exists(whiskyPath) ? File.ReadAllBytes(whiskyPath) : null,
-                                    Quantity = 2000,
-                                    Pack = getPacking(2000)
-                                },
-                                 new Product
-                                {
-                                    Name = "Whisky Jack",
-                                    Producer = "Nagy Pias Kft",
-                                    TypeNumber = 4,
-                                    NetPrice = 1500,
-                                    GrossPrice = 1905,
-                                    Description = "Adom adom",
-                                    Image =   File.Exists(whiskyPath) ? File.ReadAllBytes(whiskyPath) : null,
-                                    Quantity = 13,
-                                    Pack = getPacking(13)
-                                },
-                                  new Product
-                                {
-                                    Name = "Jim Whisky",
-                                    Producer = "Pias Kft",
-                                    TypeNumber = 3,
-                                    NetPrice = 1000,
-                                    GrossPrice = 1270,
-                                    Description = "Smooth taste",
-                                    Image =   File.Exists(whiskyPath) ? File.ReadAllBytes(whiskyPath) : null,
-                                    Quantity = 2000,
-                                    Pack = getPacking(2000)
-                                },
-                                 new Product
-                                {
-                                    Name = "Whisky Jack",
-                                    Producer = "Nagy Pias Kft",
-                                    TypeNumber = 4,
-                                    NetPrice = 1500,
-                                    GrossPrice = 1905,
-                                    Description = "Adom adom",
-                                    Image =   File.Exists(whiskyPath) ? File.ReadAllBytes(whiskyPath) : null,
                                     Quantity = 13,
                                     Pack = getPacking(13)
                                 },
@@ -665,12 +387,14 @@ namespace DrinkWholeSale.Persistence
                 },
                 new MainCat
                 {
+                    Id = 2,
                     Name = "Alcohol free drinks"
 ,
                     SubCats = new List<SubCat>
                     {
                         new SubCat
                         {
+                            Id = 3,
                             Name = "Viz",
                             Products = new List<Product>
                             {
@@ -682,7 +406,6 @@ namespace DrinkWholeSale.Persistence
                                     NetPrice = 1000,
                                     GrossPrice = 1270,
                                     Description = "ocean taste",
-                                    Image = File.Exists(szen_vizPath) ? File.ReadAllBytes(szen_vizPath) : null,
                                     Quantity = 6,
                                     Pack = getPacking(6)
                                 },
@@ -694,7 +417,6 @@ namespace DrinkWholeSale.Persistence
                                     NetPrice = 1500,
                                     GrossPrice = 1905,
                                     Description = "better",
-                                    Image = File.Exists(waterPath) ? File.ReadAllBytes(waterPath) : null,
                                     Quantity = 99999,
                                     Pack = getPacking(99999)
                                 },
@@ -702,6 +424,7 @@ namespace DrinkWholeSale.Persistence
                         },
                         new SubCat
                         {
+                            Id = 4,
                             Name = "Orange Juice",
                             Products = new List<Product>
                             {
@@ -713,7 +436,6 @@ namespace DrinkWholeSale.Persistence
                                     NetPrice = 1000,
                                     GrossPrice = 1270,
                                     Description = "Juice Juice Juice",
-                                    Image = File.Exists(narancs_sioPath) ? File.ReadAllBytes(narancs_sioPath) : null,
                                     Quantity = 1456,
                                     Pack = getPacking(1456)
                                 },
@@ -725,7 +447,6 @@ namespace DrinkWholeSale.Persistence
                                     NetPrice = 1500,
                                     GrossPrice = 1905,
                                     Description = "Adom adom",
-                                    Image = File.Exists(orangePath) ? File.ReadAllBytes(orangePath) : null,
                                     Quantity = 5012,
                                     Pack = getPacking(5012)
                                 },
@@ -738,6 +459,7 @@ namespace DrinkWholeSale.Persistence
             };
 
             context.AddRange(defaultLists);
+
             context.SaveChanges();
         }
     }

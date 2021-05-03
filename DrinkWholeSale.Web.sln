@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DrinkWholeSale.Persistence"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DrinkWholeSale.WebApi", "DrinkWholeSale.WebApi\DrinkWholeSale.WebApi.csproj", "{D29D6A3A-5FC1-4283-8B2A-D286B73CAEF9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrinkWholeSale.Desktop", "DrinkWholeSale.Desktop\DrinkWholeSale.Desktop.csproj", "{D5BE9D5C-0AAA-48D3-B923-A84D9D8982C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DrinkWholeSale.Desktop", "DrinkWholeSale.Desktop\DrinkWholeSale.Desktop.csproj", "{D5BE9D5C-0AAA-48D3-B923-A84D9D8982C0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrinkWholeSale.WebApi.Tests", "DrinkWholeSale.WebApi.Tests\DrinkWholeSale.WebApi.Tests.csproj", "{D0B2A279-8720-4058-8FCC-105D51A3980D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{D5BE9D5C-0AAA-48D3-B923-A84D9D8982C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5BE9D5C-0AAA-48D3-B923-A84D9D8982C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5BE9D5C-0AAA-48D3-B923-A84D9D8982C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0B2A279-8720-4058-8FCC-105D51A3980D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0B2A279-8720-4058-8FCC-105D51A3980D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0B2A279-8720-4058-8FCC-105D51A3980D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0B2A279-8720-4058-8FCC-105D51A3980D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

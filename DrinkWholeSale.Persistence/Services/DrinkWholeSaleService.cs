@@ -15,6 +15,8 @@ namespace DrinkWholeSale.Persistence.Services
     {
         private readonly DrinkWholeSaleDbContext _context;
         private readonly UserManager<Guest> _userManager;
+      
+
         public static Packaging getPacking(int quant)
         {
             if (quant >= 6 && quant < 12)
@@ -46,6 +48,12 @@ namespace DrinkWholeSale.Persistence.Services
             _context = context;
             _userManager = userManager;
         }
+
+        public DrinkWholeSaleService(DrinkWholeSaleDbContext context)
+        {
+            this._context = context;
+        }
+
         //---MAINCAT---
         // visszaadja a főkategóriákat név szerint szürhetünk ha akarunk
         public IEnumerable<MainCat> MainCats => _context.MainCats; // ez nemtudom kell e mert lazyloadingot használok
