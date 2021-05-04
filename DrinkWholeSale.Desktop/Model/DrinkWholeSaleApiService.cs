@@ -83,5 +83,100 @@ namespace DrinkWholeSale.Desktop.Model
             throw new NetworkException("Service returned respsone: " + response.StatusCode);
         }
 
+        public async Task CreateMainCatAsync(MainCatDto list)
+        {
+            HttpResponseMessage response = await _client.PostAsJsonAsync("api/MainCats/", list);
+            list.Id = (await response.Content.ReadAsAsync<MainCatDto>()).Id;
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new NetworkException("Service returned response: " + response.StatusCode);
+            }
+        }
+
+        public async Task UpdateMainCatAsync(MainCatDto list)
+        {
+            HttpResponseMessage response = await _client.PutAsJsonAsync($"api/MainCats/{list.Id}", list);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new NetworkException("Service returned response: " + response.StatusCode);
+            }
+        }
+
+        public async Task DeleteMainCatAsync(Int32 listId)
+        {
+            HttpResponseMessage response = await _client.DeleteAsync($"api/MainCats/{listId}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new NetworkException("Service returned response: " + response.StatusCode);
+            }
+        }
+
+
+        public async Task CreateSubCatAsync(SubCatDto list)
+        {
+            HttpResponseMessage response = await _client.PostAsJsonAsync("api/SubCats/", list);
+            list.Id = (await response.Content.ReadAsAsync<MainCatDto>()).Id;
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new NetworkException("Service returned response: " + response.StatusCode);
+            }
+        }
+        // ITT IS LEHET BAJ
+        public async Task UpdateSubCatAsync(SubCatDto list)
+        {
+            HttpResponseMessage response = await _client.PutAsJsonAsync($"api/SubCats/{list.Id}", list);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new NetworkException("Service returned response: " + response.StatusCode);
+            }
+        }
+
+        public async Task DeleteSubCatAsync(Int32 listId)
+        {
+            HttpResponseMessage response = await _client.DeleteAsync($"api/SubCats/{listId}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new NetworkException("Service returned response: " + response.StatusCode);
+            }
+        }
+
+
+        public async Task CreateProductAsync(ProductDto list)
+        {
+            HttpResponseMessage response = await _client.PostAsJsonAsync("api/Products/", list);
+            list.Id = (await response.Content.ReadAsAsync<MainCatDto>()).Id;
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new NetworkException("Service returned response: " + response.StatusCode);
+            }
+        }
+        // ITT BAJ LEHET, lehet kisbeítű mindenhol a api/eza rész
+        public async Task UpdateProductAsync(ProductDto list)
+        {
+            HttpResponseMessage response = await _client.PutAsJsonAsync($"api/Products/{list.Id}", list);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new NetworkException("Service returned response: " + response.StatusCode);
+            }
+        }
+
+        public async Task DeleteProductAsync(Int32 listId)
+        {
+            HttpResponseMessage response = await _client.DeleteAsync($"api/Products/{listId}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new NetworkException("Service returned response: " + response.StatusCode);
+            }
+        }
+
     }
 }

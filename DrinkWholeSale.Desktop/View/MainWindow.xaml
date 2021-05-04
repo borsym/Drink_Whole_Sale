@@ -28,17 +28,14 @@
                 </GroupBox.Header>
                 <DataGrid ItemsSource="{Binding Lists}"
                       VerticalContentAlignment="Stretch"  IsReadOnly="True"
-                      AutoGenerateColumns="False" HeadersVisibility="None">
+                      AutoGenerateColumns="False" HeadersVisibility="None"
+                      SelectedItem="{Binding SelectedMainCat}"    
+                          >
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SelectionChanged">
                             <i:InvokeCommandAction
                                 Command="{Binding SelectCommand}"
-                                CommandParameter="{
-                                    Binding Path=SelectedItem,
-                                    RelativeSource={
-                                        RelativeSource
-                                        AncestorType={x:Type DataGrid},
-                                        AncestorLevel=1}}" />
+                              />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                     <DataGrid.Columns>
@@ -51,7 +48,7 @@
                     <Label Content="SubCats:" />
                 </GroupBox.Header>
                 <DataGrid VerticalContentAlignment="Stretch" ItemsSource="{Binding SubCats}" IsReadOnly="True"
-                      AutoGenerateColumns="False">
+                      AutoGenerateColumns="False"  SelectedItem="{Binding SelectedSubCat}"  >
                     <DataGrid.Columns>
 
                         <DataGridTextColumn Header="Name" Binding="{Binding Name}"  Width="*">

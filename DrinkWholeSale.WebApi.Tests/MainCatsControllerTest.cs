@@ -2,11 +2,15 @@ using DrinkWholeSale.Persistence;
 using DrinkWholeSale.Persistence.DTO;
 using DrinkWholeSale.Persistence.Services;
 using DrinkWholeSale.WebApi.Controllers;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using Xunit;
 
 namespace DrinkWholeSale.WebApi.Tests
@@ -25,9 +29,29 @@ namespace DrinkWholeSale.WebApi.Tests
             _context = new DrinkWholeSaleDbContext(options);
 
             TestDbInitializer.Initialize(_context);
-            
+            //var userManager = new UserManager<Guest>(
+            //    new UserStore<Guest>(_context), null,
+            //    new PasswordHasher<Guest>(), null, null, null, null, null, null);
+
+            //var user = new Guest { UserName = "testName", Id = 1};
+            //userManager.CreateAsync(user, "testPassword").Wait();
+
             _service = new DrinkWholeSaleService(_context);
             _controller = new MainCatsController(_service);
+
+            var claimsIdentity = new ClaimsIdentity(new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, "testName"),
+                new Claim(ClaimTypes.NameIdentifier, "testId"),
+            });
+            var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+            _controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = claimsPrincipal
+                }
+            };
         }
 
         public void Dispose()
