@@ -60,6 +60,18 @@ namespace DrinkWholeSale.Desktop.Model
 
             throw new NetworkException("Service returned respsone: "+ response.StatusCode);
         }
+        public async Task<IEnumerable<OrderDto>> LoadOrdersAsync()
+        {
+            var response = await _client.GetAsync("api/Orders");  // jol írtam?
+
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadAsAsync<IEnumerable<OrderDto>>();
+            }
+
+            throw new NetworkException("Service returned respsone: " + response.StatusCode);
+        }
+        
 
         public async Task<IEnumerable<SubCatDto>> LoadSubCatsAsync(int subcatId)
         {
@@ -83,7 +95,19 @@ namespace DrinkWholeSale.Desktop.Model
 
             throw new NetworkException("Service returned respsone: " + response.StatusCode);
         }
+        
 
+        public async Task<IEnumerable<OrderDto>> LoadOrderAsync(int orderId)
+        {
+            var response = await _client.GetAsync($"api/Orders/{orderId}");  // jol írtam?
+
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadAsAsync<IEnumerable<OrderDto>>();
+            }
+
+            throw new NetworkException("Service returned respsone: " + response.StatusCode);
+        }
         public async Task CreateMainCatAsync(MainCatDto list)
         {
             HttpResponseMessage response = await _client.PostAsJsonAsync("api/MainCats/", list);

@@ -6,7 +6,7 @@
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:local="clr-namespace:DrinkWholeSale.Desktop"
         mc:Ignorable="d"
-        Title="TodoList" Height="700" Width="800">
+        Title="DrinkWholeSale" Height="700" Width="800">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="ContentRendered">
             <i:InvokeCommandAction Command="{Binding RefreshListsCommand}" />
@@ -16,8 +16,13 @@
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_Refresh lists" Command="{Binding RefreshListsCommand}" />
             <MenuItem Header="Logout" Command="{Binding LogoutCommand}" />
+            <MenuItem Header="Orders" Command="{Binding OrderCommand}" />
         </Menu>
         <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="107*"/>
+                <ColumnDefinition Width="693*"/>
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
@@ -29,7 +34,7 @@
 
 
             </Grid.RowDefinitions>
-            <GroupBox Grid.Row="0">
+            <GroupBox Grid.Row="0" Grid.ColumnSpan="2">
                 <GroupBox.Header>
                     <Label Content="MainCats:" />
                 </GroupBox.Header>
@@ -50,14 +55,14 @@
                     </DataGrid.Columns>
                 </DataGrid>
             </GroupBox>
-            <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2" Margin="0,143,0,0" Grid.RowSpan="2">
                 <TextBox Width="100"  Height="21" Margin="5" Text="{Binding SelectedMainCatName, UpdateSourceTrigger=PropertyChanged}" />
                 <Button Width="73"  Height="21" Margin="5" Content="Add MainCat" Command="{Binding AddMainCatCommand}" />
                 <Button Width="73"  Height="21" Margin="5" Content="Edit MainCat" Command="{Binding EditMainCatCommand}" />
                 <Button Width="73"  Height="21" Margin="5" Content="Delete MainCat" Command="{Binding DeleteMainCatCommand}" />
             </StackPanel>
 
-            <GroupBox Grid.Row="2">
+            <GroupBox Grid.Row="1" Grid.ColumnSpan="2" Margin="0,31,0,31" Grid.RowSpan="3">
                 <GroupBox.Header>
                     <Label Content="SubCats:" />
                 </GroupBox.Header>
@@ -77,16 +82,16 @@
                         <DataGridTextColumn Binding="{Binding Name}" Width="*" />
                     </DataGrid.Columns>
                 </DataGrid>
-             
+
             </GroupBox>
-      
-            <StackPanel Grid.Row="3" Orientation="Horizontal">
+
+            <StackPanel Grid.Row="3" Orientation="Horizontal" Grid.ColumnSpan="2" Margin="0,0,0,286" Grid.RowSpan="2">
                 <Button Width="73"  Height="21" Margin="5" Content="Add SubCat" Command="{Binding AddSubCatCommand}" />
                 <Button Width="73"  Height="21" Margin="5" Content="Edit SubCat" Command="{Binding EditSubCatCommand}" />
                 <Button Width="73"  Height="21" Margin="5" Content="Delete SubCat" Command="{Binding DeleteSubCatCommand}" />
             </StackPanel>
 
-            <GroupBox Grid.Row="4">
+            <GroupBox Grid.Row="4" Grid.ColumnSpan="2">
                 <GroupBox.Header>
                     <Label Content="Products:" />
                 </GroupBox.Header>
@@ -101,10 +106,46 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
+                        <DataGridTextColumn Header="Description" Binding="{Binding Description}"  Width="*">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextWrapping" Value="Wrap" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="NetPrice" Binding="{Binding NetPrice}"  Width="*">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextWrapping" Value="Wrap" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Producer" Binding="{Binding Producer}"  Width="*">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextWrapping" Value="Wrap" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Pack" Binding="{Binding Pack}"  Width="*">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextWrapping" Value="Wrap" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}"  Width="*">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextWrapping" Value="Wrap" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
                     </DataGrid.Columns>
+
                 </DataGrid>
             </GroupBox>
-            <StackPanel Grid.Row="5" Orientation="Horizontal">
+            <StackPanel Grid.Row="4" Orientation="Horizontal" Grid.ColumnSpan="2" Margin="0,286,0,0" Grid.RowSpan="2">
                 <Button Width="73"  Height="21" Margin="5" Content="Add Product" Command="{Binding AddProductCommand}" />
                 <Button Width="73"  Height="21" Margin="5" Content="Edit Product" Command="{Binding EditProductCommand}" />
                 <Button Width="73"  Height="21" Margin="5" Content="Delete Product" Command="{Binding DeleteProductCommand}" />

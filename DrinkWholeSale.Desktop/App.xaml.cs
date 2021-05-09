@@ -25,7 +25,8 @@ namespace DrinkWholeSale.Desktop
         private MainWindow _view;
         private SubCatEditorWindow _subCatEditView;
         private ProductEditorWindow _productEditView;
-
+        private OrderWindow _orderWindow;
+        private OrderViewModel _orderViewModel;
         public App()
         {
             Startup += App_Startup;
@@ -51,8 +52,7 @@ namespace DrinkWholeSale.Desktop
 
             _mainViewModel.StartingSubCatEdit += _mainViewModel_StartingSubCatEdit;
             _mainViewModel.FinishingSubCatEdit += _mainViewModel_FinishingSubCatEdit;
-
-
+            
             _mainViewModel.StartingProductEdit += _mainViewModel_StartingProductEdit;
             _mainViewModel.FinishingProductEdit += _mainViewModel_FinishingProductEdit;
             _mainViewModel.StartingImageChange += _mainViewModel_StartingImageChange;
@@ -62,7 +62,10 @@ namespace DrinkWholeSale.Desktop
                 DataContext = _mainViewModel
             };
 
+            
+
             _loginView.Show();
+            
         }
 
         private async void _mainViewModel_StartingImageChange(object sender, EventArgs e)
@@ -119,17 +122,24 @@ namespace DrinkWholeSale.Desktop
             _view.Hide();
             _loginView.Show();
         }
+        private void _loginViewModel_LoginSucceeded(object sender, EventArgs e)
+        {
+            _loginView.Hide();
+            _orderWindow = new OrderWindow
+            {
+                DataContext = _mainViewModel
+            };
+            _orderWindow.ShowDialog();
+           // _view.Show();
+        }
+
 
         private void _loginViewModel_LoginFailed(object sender, EventArgs e)
         {
             MessageBox.Show("Login failed!", "DrinkWholeSale", MessageBoxButton.OK);
         }
 
-        private void _loginViewModel_LoginSucceeded(object sender, EventArgs e)
-        {
-            _loginView.Hide();
-            _view.Show();
-        }
+    
 
         private void _mainViewModel_Message(object sender, MessageEventArgs e)
         {

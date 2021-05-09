@@ -121,7 +121,7 @@ namespace DrinkWholeSale.Desktop.ViewModel
             Pack = dto.Pack,
             GrossPrice = (int)Math.Round(dto.NetPrice * 1.27),
             Description = dto.Description,
-            Image = dto.Image,
+           Image = dto.Image,
             SubCatId = dto.SubCatId
 
             

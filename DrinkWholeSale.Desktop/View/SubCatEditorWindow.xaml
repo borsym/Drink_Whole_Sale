@@ -7,7 +7,7 @@
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="TodoList - Item editor" Height="Auto" Width="400"
+        Title="Subcat - editor" Height="Auto" Width="400"
         ResizeMode="NoResize" SizeToContent="Height">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closed">

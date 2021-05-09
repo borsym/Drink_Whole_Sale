@@ -16,10 +16,13 @@ namespace DrinkWholeSale.Desktop.ViewModel
         private ObservableCollection<MainCatViewModel> _maincats;
         private ObservableCollection<SubCatViewModel> _subcats;
         private ObservableCollection<ProductViewModel> _products;
+        private ObservableCollection<OrderViewModel> _order;
 
         private SubCatViewModel _selectedSubCat;
         private MainCatViewModel _selectedMainCat;
         private SubCatViewModel _editableSubCat;
+        private OrderViewModel _selectedOrder;
+        private String _selectedOrderName; 
         private String _selectedMainCatName;
 
         private ProductViewModel _editableProduct;
@@ -31,8 +34,12 @@ namespace DrinkWholeSale.Desktop.ViewModel
             get { return _maincats; }
             set { _maincats = value; OnPropertyChanged(); }
         }
+        public ObservableCollection<OrderViewModel> Orders
+        {
+            get { return _order; }
+            set { _order = value; OnPropertyChanged(); }
+        }
 
-    
         public ObservableCollection<SubCatViewModel> SubCats
         {
             get { return _subcats; }
@@ -47,10 +54,14 @@ namespace DrinkWholeSale.Desktop.ViewModel
         public SubCatViewModel EditableSubCat { get { return _editableSubCat; } set { _editableSubCat = value; OnPropertyChanged(); } }
         public ProductViewModel EditableProduct { get { return _editableProduct;  }  set { _editableProduct = value; OnPropertyChanged(); } }
         public DelegateCommand RefreshListsCommand { get; private set; }
+        public DelegateCommand RefreshOrderCommand { get; private set; }
         public DelegateCommand LogoutCommand { get; private set; }
+        public DelegateCommand OrderCommand { get; private set; }
+        
         public DelegateCommand SelectCommand { get; private set; }
         public DelegateCommand SelectCommand2 { get; private set; } // ez így??
-
+        
+        public DelegateCommand SelectCommandOrder { get; private set; } // ez így??
         public DelegateCommand AddMainCatCommand { get; private set; }
         public DelegateCommand EditMainCatCommand { get; private set; }
         public DelegateCommand DeleteMainCatCommand { get; private set; }
@@ -72,11 +83,13 @@ namespace DrinkWholeSale.Desktop.ViewModel
         public SubCatViewModel SelectedSubCat { get { return _selectedSubCat; } set { _selectedSubCat = value; OnPropertyChanged(); } }
 
         public MainCatViewModel SelectedMainCat { get { return _selectedMainCat; } set { _selectedMainCat = value; OnPropertyChanged(); } }
-
+        
         public ProductViewModel SelectedProduct { get { return _selectedProduct; } set { _selectedProduct = value; OnPropertyChanged(); } }
+        public OrderViewModel SelectedOrder { get { return _selectedOrder; } set { _selectedOrder = value; OnPropertyChanged(); } }
 
         public string SelectedMainCatName { get { return _selectedMainCatName; } set { _selectedMainCatName = value; OnPropertyChanged(); } }
         public string SelectedSubCatName { get { return _selectedSubCatName; } set { _selectedSubCatName = value; OnPropertyChanged(); } }
+        public string SelectedOrderName { get { return _selectedOrderName; } set { _selectedOrderName = value; OnPropertyChanged(); } }
 
         public event EventHandler LogoutSucceeded;
         public event EventHandler StartingSubCatEdit;
@@ -92,12 +105,14 @@ namespace DrinkWholeSale.Desktop.ViewModel
             _service = service;
 
             RefreshListsCommand = new DelegateCommand(_ => LoadMainCatsAsync());
+            RefreshOrderCommand = new DelegateCommand(_ => LoadOrdersAsync());
             LogoutCommand = new DelegateCommand(_ => LogoutAsync());
+
 
 
             SelectCommand = new DelegateCommand(param => LoadSubCatsAsync(SelectedMainCat));
             SelectCommand2 = new DelegateCommand(param => LoadProductAsync(SelectedSubCat));
-
+            SelectCommandOrder = new DelegateCommand(param => LoadOrderAsync(SelectedOrder));
 
             AddMainCatCommand = new DelegateCommand(_ => AddMainCat());
             EditMainCatCommand = new DelegateCommand(_ => !(SelectedMainCat is null), _ => EditMainCat());
@@ -124,6 +139,8 @@ namespace DrinkWholeSale.Desktop.ViewModel
 
         }
 
+       
+
         private async void LogoutAsync()
         {
             try
@@ -145,6 +162,19 @@ namespace DrinkWholeSale.Desktop.ViewModel
             {
                 MainCats = new ObservableCollection<MainCatViewModel>((await _service.LoadMainCatsAsync())
                    .Select(list => (MainCatViewModel)list));
+            }
+            catch (Exception ex) when (ex is NetworkException || ex is HttpRequestException)
+            {
+                OnMessageApplication($"Unexpected error occured! ({ex.Message})");
+            }
+        }
+
+        private async void LoadOrdersAsync()
+        {
+            try
+            {
+                Orders = new ObservableCollection<OrderViewModel>((await _service.LoadOrdersAsync())
+                   .Select(list => (OrderViewModel)list));
             }
             catch (Exception ex) when (ex is NetworkException || ex is HttpRequestException)
             {
@@ -286,7 +316,24 @@ namespace DrinkWholeSale.Desktop.ViewModel
             }
             FinishingSubCatEdit?.Invoke(this, EventArgs.Empty);
         }
+        
 
+        private async void LoadOrderAsync(OrderViewModel subcatDto)
+        {
+            if (subcatDto is null)
+                return;
+
+            try
+            {
+                SelectedOrderName = subcatDto.Name;
+                Orders = new ObservableCollection<OrderViewModel>((await _service.LoadOrderAsync(subcatDto.Id))
+                    .Select(item => (OrderViewModel)item));
+            }
+            catch (Exception ex) when (ex is NetworkException || ex is HttpRequestException)
+            {
+                OnMessageApplication($"Unexpected error occured! ({ex.Message})");
+            }
+        }
         private async void LoadProductAsync(SubCatViewModel subcatDto)
         {
             if (subcatDto is null)
