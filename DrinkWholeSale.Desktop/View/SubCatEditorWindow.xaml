@@ -1,0 +1,56 @@
+﻿<Window x:Class="DrinkWholeSale.Desktop.View.SubCatEditorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DrinkWholeSale.Desktop.View"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d"
+        Title="TodoList - Item editor" Height="Auto" Width="400"
+        ResizeMode="NoResize" SizeToContent="Height">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closed">
+            <i:InvokeCommandAction Command="{Binding CancelSubCatEditCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="48" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0" Grid.Column="0" Content="Name:" VerticalAlignment="Center" />
+        <TextBox Grid.Row="0" Grid.Column="1" Margin="5"
+                 Text="{Binding EditableSubCat.Name, UpdateSourceTrigger=PropertyChanged}" />
+
+   
+        <Label Grid.Row="5" Grid.Column="0" Content="MainCat:" VerticalAlignment="Center" />
+        <ComboBox Grid.Row="5" Grid.Column="1" Margin="5"
+                  ItemsSource="{Binding MainCats}"
+                  SelectedValue="{Binding EditableSubCat.MainCatId}"
+                  SelectedValuePath="Id"
+                  DisplayMemberPath="Name" />
+
+        <Button Grid.Row="6" Grid.Column="0" Content="Cancel"
+                HorizontalAlignment="Left" VerticalAlignment="Center"
+                Width="73"  Height="21"  Margin="5"
+                IsCancel="True"
+                Command="{Binding CancelSubCatEditCommand}"/>
+
+        <Button Grid.Row="6" Grid.Column="1" Content="Save"
+                HorizontalAlignment="Right" VerticalAlignment="Center"
+                Width="73"  Height="21"  Margin="5"
+                IsDefault="True"
+                Command="{Binding SaveSubCatEditCommand}"/>
+    </Grid>
+</Window>

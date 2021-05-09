@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DrinkWholeSale.Desktop.ViewModel
 {
-    class SubCatViewModel : ViewModelBase
+   public class SubCatViewModel : ViewModelBase
     {
         private int _id;
 

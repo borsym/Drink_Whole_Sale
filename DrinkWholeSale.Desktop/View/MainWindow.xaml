@@ -6,7 +6,7 @@
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:local="clr-namespace:DrinkWholeSale.Desktop"
         mc:Ignorable="d"
-        Title="TodoList" Height="500" Width="800">
+        Title="TodoList" Height="700" Width="800">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="ContentRendered">
             <i:InvokeCommandAction Command="{Binding RefreshListsCommand}" />
@@ -20,13 +20,20 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
-                <RowDefinition Height="3*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="Auto" />
+
+
+
             </Grid.RowDefinitions>
             <GroupBox Grid.Row="0">
                 <GroupBox.Header>
-                    <Label Content="Lists:" />
+                    <Label Content="MainCats:" />
                 </GroupBox.Header>
-                <DataGrid ItemsSource="{Binding Lists}"
+                <DataGrid ItemsSource="{Binding MainCats}"
                       VerticalContentAlignment="Stretch"  IsReadOnly="True"
                       AutoGenerateColumns="False" HeadersVisibility="None"
                       SelectedItem="{Binding SelectedMainCat}"    
@@ -43,12 +50,48 @@
                     </DataGrid.Columns>
                 </DataGrid>
             </GroupBox>
-            <GroupBox Grid.Row="1">
+            <StackPanel Grid.Row="1" Orientation="Horizontal">
+                <TextBox Width="100"  Height="21" Margin="5" Text="{Binding SelectedMainCatName, UpdateSourceTrigger=PropertyChanged}" />
+                <Button Width="73"  Height="21" Margin="5" Content="Add MainCat" Command="{Binding AddMainCatCommand}" />
+                <Button Width="73"  Height="21" Margin="5" Content="Edit MainCat" Command="{Binding EditMainCatCommand}" />
+                <Button Width="73"  Height="21" Margin="5" Content="Delete MainCat" Command="{Binding DeleteMainCatCommand}" />
+            </StackPanel>
+
+            <GroupBox Grid.Row="2">
                 <GroupBox.Header>
                     <Label Content="SubCats:" />
                 </GroupBox.Header>
-                <DataGrid VerticalContentAlignment="Stretch" ItemsSource="{Binding SubCats}" IsReadOnly="True"
-                      AutoGenerateColumns="False"  SelectedItem="{Binding SelectedSubCat}"  >
+                <DataGrid ItemsSource="{Binding SubCats}"
+                      VerticalContentAlignment="Stretch"  IsReadOnly="True"
+                      AutoGenerateColumns="False" HeadersVisibility="None"
+                      SelectedItem="{Binding SelectedSubCat}"    
+                          >
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction
+                                Command="{Binding SelectCommand2}"
+                              />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding Name}" Width="*" />
+                    </DataGrid.Columns>
+                </DataGrid>
+             
+            </GroupBox>
+      
+            <StackPanel Grid.Row="3" Orientation="Horizontal">
+                <Button Width="73"  Height="21" Margin="5" Content="Add SubCat" Command="{Binding AddSubCatCommand}" />
+                <Button Width="73"  Height="21" Margin="5" Content="Edit SubCat" Command="{Binding EditSubCatCommand}" />
+                <Button Width="73"  Height="21" Margin="5" Content="Delete SubCat" Command="{Binding DeleteSubCatCommand}" />
+            </StackPanel>
+
+            <GroupBox Grid.Row="4">
+                <GroupBox.Header>
+                    <Label Content="Products:" />
+                </GroupBox.Header>
+                <DataGrid VerticalContentAlignment="Stretch" ItemsSource="{Binding Products}" IsReadOnly="True"
+                      AutoGenerateColumns="False"  SelectedItem="{Binding SelectedProduct}"  >
                     <DataGrid.Columns>
 
                         <DataGridTextColumn Header="Name" Binding="{Binding Name}"  Width="*">
@@ -61,9 +104,11 @@
                     </DataGrid.Columns>
                 </DataGrid>
             </GroupBox>
-           
-
-
+            <StackPanel Grid.Row="5" Orientation="Horizontal">
+                <Button Width="73"  Height="21" Margin="5" Content="Add Product" Command="{Binding AddProductCommand}" />
+                <Button Width="73"  Height="21" Margin="5" Content="Edit Product" Command="{Binding EditProductCommand}" />
+                <Button Width="73"  Height="21" Margin="5" Content="Delete Product" Command="{Binding DeleteProductCommand}" />
+            </StackPanel>
         </Grid>
     </DockPanel>
 </Window>

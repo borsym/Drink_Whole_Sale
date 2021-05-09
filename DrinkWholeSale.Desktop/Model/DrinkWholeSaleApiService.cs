@@ -1,6 +1,7 @@
 ﻿using DrinkWholeSale.Persistence.DTO;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -128,6 +129,7 @@ namespace DrinkWholeSale.Desktop.Model
         // ITT IS LEHET BAJ
         public async Task UpdateSubCatAsync(SubCatDto list)
         {
+            Debug.WriteLine("ITT VAN:: "+list.Id);
             HttpResponseMessage response = await _client.PutAsJsonAsync($"api/SubCats/{list.Id}", list);
 
             if (!response.IsSuccessStatusCode)
