@@ -45,7 +45,8 @@ namespace DrinkWholeSale.WebApi.Controllers
         {
             try
             {
-                return (ProductDto)_service.GetProductById(id);
+                var jozsi = (ProductDto)_service.GetProductById(id);
+                return jozsi;
             }
             catch (InvalidOperationException)
             {
@@ -81,7 +82,7 @@ namespace DrinkWholeSale.WebApi.Controllers
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [Authorize]
         [HttpPost]
-        public ActionResult<Product> PostProduct(Product product)
+        public ActionResult<Product> PostProduct(ProductDto product)
         {
             var item = _service.CreateProduct((Product)product);
             if (item is null)

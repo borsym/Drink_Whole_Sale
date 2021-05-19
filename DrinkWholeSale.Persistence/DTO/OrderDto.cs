@@ -1,6 +1,7 @@
 ﻿using DrinkWholeSale.Persistence.Shopping;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace DrinkWholeSale.Persistence.DTO
@@ -14,6 +15,7 @@ namespace DrinkWholeSale.Persistence.DTO
         public string Email { get; set; }
         public int GuestId { get; set; }
         public bool fulfilled { get; set; }
+        public List<ShoppingCartDto> Items { get; set; }
 
         public static explicit operator Order(OrderDto dto) => new Order
         {
@@ -23,7 +25,9 @@ namespace DrinkWholeSale.Persistence.DTO
             Phone = dto.Phone,
             Email = dto.Email,
             GuestId = dto.GuestId,
-            fulfilled = dto.fulfilled
+            fulfilled = dto.fulfilled,
+            items = dto.Items.Select(r => (ShoppingCart)r).ToList()
+           
         };
 
         public static explicit operator OrderDto(Order m) => new OrderDto
@@ -34,7 +38,9 @@ namespace DrinkWholeSale.Persistence.DTO
             Phone = m.Phone,
             Email = m.Email,
             GuestId = m.GuestId,
-            fulfilled = m.fulfilled
+            fulfilled = m.fulfilled,
+            Items = m.items.Select(r => (ShoppingCartDto)r).ToList()
+
         };
     }
 }

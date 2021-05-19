@@ -40,6 +40,7 @@ namespace DrinkWholeSale.Desktop.ViewModel
         {
             Id = rhs.Id;
             Name = rhs.Name;
+            MainCatId = rhs.MainCatId;
          
         }
 
@@ -47,6 +48,7 @@ namespace DrinkWholeSale.Desktop.ViewModel
         {
             Id = dto.Id,
             Name = dto.Name,
+            MainCatId = dto.MainCatId
            
         };
 
@@ -54,7 +56,7 @@ namespace DrinkWholeSale.Desktop.ViewModel
         {
             Id = vm.Id,
             Name = vm.Name,
-           
+            MainCatId = vm.MainCatId
         };
     }
 }

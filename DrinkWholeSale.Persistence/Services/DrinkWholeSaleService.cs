@@ -15,7 +15,7 @@ namespace DrinkWholeSale.Persistence.Services
     {
         private readonly DrinkWholeSaleDbContext _context;
         private readonly UserManager<Guest> _userManager;
-      
+
 
         public static Packaging getPacking(int quant)
         {
@@ -28,7 +28,7 @@ namespace DrinkWholeSale.Persistence.Services
             return Packaging.PIECE;
         }
 
-        private int PackNumber(Packaging pack, int quantCar)
+        public int PackNumber(Packaging pack, int quantCar)
         {
             switch (pack)
             {
@@ -57,7 +57,7 @@ namespace DrinkWholeSale.Persistence.Services
         //---MAINCAT---
         // visszaadja a főkategóriákat név szerint szürhetünk ha akarunk
         public IEnumerable<MainCat> MainCats => _context.MainCats; // ez nemtudom kell e mert lazyloadingot használok
-      //  public IEnumerable<ShoppingCart> ShoppingCarts => _context.ShoppingCarts;
+                                                                   //  public IEnumerable<ShoppingCart> ShoppingCarts => _context.ShoppingCarts;
         public List<MainCat> GetMainCats(String name = null)
         {
             return _context.MainCats
@@ -65,6 +65,18 @@ namespace DrinkWholeSale.Persistence.Services
                 .OrderBy(l => l.Name)
                 .ToList();
         }
+
+        public List<Order> GetOrders()
+        {
+            return _context.Orders.ToList();
+        }
+
+        public Order GetOrder(int id)
+        {
+            return _context.Orders.Include(m => m.items).FirstOrDefault(o => o.Id == id);
+        }
+
+
 
         public bool DeleteMainCat(int id)
         {
@@ -97,20 +109,64 @@ namespace DrinkWholeSale.Persistence.Services
             {
                 _context.Add(mainCat);
                 _context.SaveChanges();
-            } catch(DbUpdateConcurrencyException)
+            }
+            catch (DbUpdateConcurrencyException)
             {
                 return null;
             }
-            catch(DbUpdateException)
+            catch (DbUpdateException)
             {
                 return null;
             }
 
             return mainCat;
         }
+        public bool OrderExist(int id)
+        {
+            return _context.Orders.Any(e => e.Id == id);
+        }
+
+        public async Task<bool> SetStateOrderAsync(Order order)
+        {
+            try
+            {
+                foreach (var item in order.items)
+                {
+                    var product = _context.Products.FirstOrDefault(i => i.Id == item.ProductId);
+                    if (order.fulfilled)
+                    {
+                        product.Quantity = product.Quantity + PackNumber(item.Pack, item.Quantity);
+                        order.fulfilled = false;
+                    }
+                    else
+                    {
+                        if (product.Quantity >= item.Quantity)
+                        {
+                            product.Quantity = product.Quantity - PackNumber(item.Pack, item.Quantity);
+                            order.fulfilled = true;
+                        }
+                        else return false;
+
+                    }
+                    product.Pack = getPacking(product.Quantity);
+
+
+                }
+
+                var o = _context.Orders.FirstOrDefault(r => r.Id == order.Id);
+                o.fulfilled = order.fulfilled;
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+            return true;
+        }
+
         public async Task<bool> AddOrder(List<ShoppingCart> list, string userName)
         {
-            
+
             Guest guest = await _userManager.FindByNameAsync(userName);
             if (guest == null)
             {
@@ -120,7 +176,7 @@ namespace DrinkWholeSale.Persistence.Services
             foreach (var item in list)
             {
                 var product = _context.Products.FirstOrDefault(i => i.Id == item.ProductId);
-                if(product != null)
+                if (product != null)
                 {
                     if (item.Pack > product.Pack)  // mivel számozva vannak ezért van növekvő sorrend
                     {
@@ -134,18 +190,18 @@ namespace DrinkWholeSale.Persistence.Services
                 }
             }
 
-            _context.Orders.Add(new Order  
+            _context.Orders.Add(new Order
             {
                 Address = guest.Address,
                 Email = guest.Email,
                 Guest = guest,
                 Name = guest.Name,
-                items = list,  
+                items = list,
                 fulfilled = true,
                 GuestId = guest.Id,
-                Phone =  guest.PhoneNumber,
+                Phone = guest.PhoneNumber,
             });
-          
+
 
             try
             {
@@ -163,16 +219,17 @@ namespace DrinkWholeSale.Persistence.Services
                 return false;
             }
             return true;
-            
-
         }
+
+
+
         public MainCat GetMainCatById(int? id)
         {
             return _context.MainCats
                 .FirstOrDefault(l => l.Id == id);  // nincs talalat akkor null, legbiztonságosabb
         }
-        
-        public List<SubCat> GetProductByMainCatId(int id)  
+
+        public List<SubCat> GetProductByMainCatId(int id)
         {
             return _context.MainCats
                 .Include(l => l.SubCats)
@@ -228,7 +285,7 @@ namespace DrinkWholeSale.Persistence.Services
                 _context.Add(mainCat);
                 _context.SaveChanges();
             }
-            catch(DbUpdateException)
+            catch (DbUpdateException)
             {
                 return false;
             }
@@ -251,7 +308,7 @@ namespace DrinkWholeSale.Persistence.Services
                 .OrderBy(l => l.Name)
                 .ToList();
         }
-        
+
         public SubCat GetSubCatById(int id)
         {
             return _context.SubCats
@@ -369,7 +426,7 @@ namespace DrinkWholeSale.Persistence.Services
             var item = _context.Products.Find(id);
             if (item == null)
                 return false;
-            
+
             try
             {
                 _context.Remove(item);
@@ -405,14 +462,14 @@ namespace DrinkWholeSale.Persistence.Services
 
         }
 
-        
+
 
         //---EGYÉB---
-        
-     
 
-     
-      
+
+
+
+
         public ShoppingCart newShoppingCartAdd2(int? productId)
         {
             if (productId == null)
@@ -429,7 +486,8 @@ namespace DrinkWholeSale.Persistence.Services
           public int ProductId { get; set; } // na itt van az hogy melyik termék tartozik hozzá
           public Packaging Pack { get; set; }*/
 
-            ShoppingCart shoppingCart = new ShoppingCart {
+            ShoppingCart shoppingCart = new ShoppingCart
+            {
                 Product = product
             }; // létrehozunk egy új foglalást, amelynek megadjuk az terméket
 

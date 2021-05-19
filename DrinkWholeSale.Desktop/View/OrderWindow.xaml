@@ -43,18 +43,22 @@
                     </i:Interaction.Triggers>
                     <DataGrid.Columns>
                         <DataGridTextColumn Binding="{Binding Name}" Width="*" />
+                        <DataGridTextColumn Binding="{Binding Address}" Width="*" />
+                        <DataGridTextColumn Binding="{Binding Email}" Width="*" />
+                        <DataGridTextColumn Binding="{Binding Phone}" Width="*" />
+                        <DataGridTextColumn Binding="{Binding FulfilledText}" Width="*" />
                     </DataGrid.Columns>
                 </DataGrid>
             </GroupBox>
             <StackPanel Grid.Row="1" Orientation="Horizontal">
-                <Button Width="78"  Height="21" Margin="5" Content="Accept Order" Command="{Binding AcceptCommand}" />
+                <Button Width="78"  Height="21" Margin="5" Content="Accept/Reject Order" Command="{Binding AcceptCommand}" />
             </StackPanel>
 
             <GroupBox Grid.Row="2">
                 <GroupBox.Header>
                     <Label Content="Products:" />
                 </GroupBox.Header>
-                <DataGrid ItemsSource="{Binding SubCats}"
+                <DataGrid ItemsSource="{Binding OrdersProduct}"
                       VerticalContentAlignment="Stretch"  IsReadOnly="True"
                       AutoGenerateColumns="False" HeadersVisibility="None"
                       SelectedItem="{Binding SelectedSubCat}"    

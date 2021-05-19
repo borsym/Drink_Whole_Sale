@@ -24,11 +24,11 @@
                 <ColumnDefinition Width="693*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="2*" />
                 <RowDefinition Height="Auto" />
 
 
@@ -55,14 +55,14 @@
                     </DataGrid.Columns>
                 </DataGrid>
             </GroupBox>
-            <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2" Margin="0,143,0,0" Grid.RowSpan="2">
+            <StackPanel Grid.Row="1" Orientation="Horizontal" Grid.ColumnSpan="2">
                 <TextBox Width="100"  Height="21" Margin="5" Text="{Binding SelectedMainCatName, UpdateSourceTrigger=PropertyChanged}" />
                 <Button Width="73"  Height="21" Margin="5" Content="Add MainCat" Command="{Binding AddMainCatCommand}" />
                 <Button Width="73"  Height="21" Margin="5" Content="Edit MainCat" Command="{Binding EditMainCatCommand}" />
                 <Button Width="73"  Height="21" Margin="5" Content="Delete MainCat" Command="{Binding DeleteMainCatCommand}" />
             </StackPanel>
 
-            <GroupBox Grid.Row="1" Grid.ColumnSpan="2" Margin="0,31,0,31" Grid.RowSpan="3">
+            <GroupBox Grid.Row="2" Grid.ColumnSpan="2">
                 <GroupBox.Header>
                     <Label Content="SubCats:" />
                 </GroupBox.Header>
@@ -85,7 +85,7 @@
 
             </GroupBox>
 
-            <StackPanel Grid.Row="3" Orientation="Horizontal" Grid.ColumnSpan="2" Margin="0,0,0,286" Grid.RowSpan="2">
+            <StackPanel Grid.Row="3" Orientation="Horizontal" Grid.ColumnSpan="2">
                 <Button Width="73"  Height="21" Margin="5" Content="Add SubCat" Command="{Binding AddSubCatCommand}" />
                 <Button Width="73"  Height="21" Margin="5" Content="Edit SubCat" Command="{Binding EditSubCatCommand}" />
                 <Button Width="73"  Height="21" Margin="5" Content="Delete SubCat" Command="{Binding DeleteSubCatCommand}" />
@@ -145,7 +145,7 @@
 
                 </DataGrid>
             </GroupBox>
-            <StackPanel Grid.Row="4" Orientation="Horizontal" Grid.ColumnSpan="2" Margin="0,286,0,0" Grid.RowSpan="2">
+            <StackPanel Grid.Row="5" Orientation="Horizontal" Grid.ColumnSpan="2">
                 <Button Width="73"  Height="21" Margin="5" Content="Add Product" Command="{Binding AddProductCommand}" />
                 <Button Width="73"  Height="21" Margin="5" Content="Edit Product" Command="{Binding EditProductCommand}" />
                 <Button Width="73"  Height="21" Margin="5" Content="Delete Product" Command="{Binding DeleteProductCommand}" />

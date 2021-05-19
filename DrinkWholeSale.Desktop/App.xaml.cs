@@ -56,7 +56,7 @@ namespace DrinkWholeSale.Desktop
             _mainViewModel.StartingProductEdit += _mainViewModel_StartingProductEdit;
             _mainViewModel.FinishingProductEdit += _mainViewModel_FinishingProductEdit;
             _mainViewModel.StartingImageChange += _mainViewModel_StartingImageChange;
-
+            _mainViewModel.OpenOrders += _mainViewModel_OrdersTab;
             _view = new MainWindow
             {
                 DataContext = _mainViewModel
@@ -66,6 +66,15 @@ namespace DrinkWholeSale.Desktop
 
             _loginView.Show();
             
+        }
+
+        private void _mainViewModel_OrdersTab(object sender, EventArgs e)
+        {
+            _orderWindow = new OrderWindow
+            {
+                DataContext = _mainViewModel
+            };
+            _orderWindow.Show();
         }
 
         private async void _mainViewModel_StartingImageChange(object sender, EventArgs e)
@@ -125,12 +134,9 @@ namespace DrinkWholeSale.Desktop
         private void _loginViewModel_LoginSucceeded(object sender, EventArgs e)
         {
             _loginView.Hide();
-            _orderWindow = new OrderWindow
-            {
-                DataContext = _mainViewModel
-            };
-            _orderWindow.ShowDialog();
-           // _view.Show();
+            
+            //_orderWindow.ShowDialog();
+            _view.Show();
         }
 
 
