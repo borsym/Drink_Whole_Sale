@@ -1,11 +1,14 @@
 ﻿using DrinkWholeSale.Desktop.Model;
+using DrinkWholeSale.Persistence;
 using DrinkWholeSale.Persistence.DTO;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace DrinkWholeSale.Desktop.ViewModel
 {
@@ -17,6 +20,8 @@ namespace DrinkWholeSale.Desktop.ViewModel
         private ObservableCollection<SubCatViewModel> _subcats;
         private ObservableCollection<ProductViewModel> _products;
         private ObservableCollection<OrderViewModel> _order;
+        private ObservableCollection<String> _packing;
+        private ObservableCollection<ShoppingCartDto> _ordersProduct;
 
         private SubCatViewModel _selectedSubCat;
         private MainCatViewModel _selectedMainCat;
@@ -29,6 +34,15 @@ namespace DrinkWholeSale.Desktop.ViewModel
         private ProductViewModel _selectedProduct;
         private String _selectedSubCatName;
 
+        public ObservableCollection<ShoppingCartDto> OrdersProduct
+        {
+            get { return _ordersProduct; }
+            set { _ordersProduct = value; OnPropertyChanged(); }
+        }
+        public ObservableCollection<String> Packing {
+            get { return _packing; }
+            set { _packing = value; OnPropertyChanged(); }
+        }
         public ObservableCollection<MainCatViewModel> MainCats
         {
             get { return _maincats; }
@@ -57,7 +71,7 @@ namespace DrinkWholeSale.Desktop.ViewModel
         public DelegateCommand RefreshOrderCommand { get; private set; }
         public DelegateCommand LogoutCommand { get; private set; }
         public DelegateCommand OrderCommand { get; private set; }
-        
+        public DelegateCommand AcceptCommand { get; private set; }
         public DelegateCommand SelectCommand { get; private set; }
         public DelegateCommand SelectCommand2 { get; private set; } // ez így??
         
@@ -79,6 +93,7 @@ namespace DrinkWholeSale.Desktop.ViewModel
         public DelegateCommand CancelProductEditCommand { get; private set; }
 
 
+
         public DelegateCommand ChangeImageCommand { get; private set; }
         public SubCatViewModel SelectedSubCat { get { return _selectedSubCat; } set { _selectedSubCat = value; OnPropertyChanged(); } }
 
@@ -91,6 +106,8 @@ namespace DrinkWholeSale.Desktop.ViewModel
         public string SelectedSubCatName { get { return _selectedSubCatName; } set { _selectedSubCatName = value; OnPropertyChanged(); } }
         public string SelectedOrderName { get { return _selectedOrderName; } set { _selectedOrderName = value; OnPropertyChanged(); } }
 
+        
+
         public event EventHandler LogoutSucceeded;
         public event EventHandler StartingSubCatEdit;
         public event EventHandler StartingProductEdit;
@@ -99,6 +116,7 @@ namespace DrinkWholeSale.Desktop.ViewModel
         public event EventHandler FinishingProductEdit;
 
         public event EventHandler StartingImageChange;
+        public event EventHandler OpenOrders;
 
         public MainViewModel(DrinkWholeSaleApiService service)
         {
@@ -106,14 +124,19 @@ namespace DrinkWholeSale.Desktop.ViewModel
 
             RefreshListsCommand = new DelegateCommand(_ => LoadMainCatsAsync());
             RefreshOrderCommand = new DelegateCommand(_ => LoadOrdersAsync());
+            OrderCommand = new DelegateCommand(_ => LoadOrdersAsync(true));
             LogoutCommand = new DelegateCommand(_ => LogoutAsync());
 
-
-
-            SelectCommand = new DelegateCommand(param => LoadSubCatsAsync(SelectedMainCat));
+            List<Packaging> packagings = new List<Packaging>(Enum.GetValues(typeof(Packaging)).Cast<Packaging>());
+            _packing = new ObservableCollection<String>();
+            foreach(Packaging p in packagings)
+            {
+                _packing.Add(p.ToString());
+            }
             SelectCommand2 = new DelegateCommand(param => LoadProductAsync(SelectedSubCat));
+            SelectCommand = new DelegateCommand(param => LoadSubCatsAsync(SelectedMainCat));
             SelectCommandOrder = new DelegateCommand(param => LoadOrderAsync(SelectedOrder));
-
+            AcceptCommand = new DelegateCommand(_ => !(SelectedOrder is null), _ => ChangeStateOfOrderAsync());
             AddMainCatCommand = new DelegateCommand(_ => AddMainCat());
             EditMainCatCommand = new DelegateCommand(_ => !(SelectedMainCat is null), _ => EditMainCat());
             DeleteMainCatCommand = new DelegateCommand(_ => !(SelectedMainCat is null), _ => DeleteMainCat(SelectedMainCat));
@@ -126,7 +149,7 @@ namespace DrinkWholeSale.Desktop.ViewModel
             CancelSubCatEditCommand = new DelegateCommand(_ => CancelSubCatEdit());
 
 
-            AddProductCommand = new DelegateCommand(_ => !(SelectedProduct is null), _ => AddProduct());
+            AddProductCommand = new DelegateCommand(_ => AddProduct());
             EditProductCommand = new DelegateCommand(_ => !(SelectedProduct is null), _ => StartEditProduct());
             DeleteProductCommand = new DelegateCommand(_ => !(SelectedProduct is null), _ => DeleteProduct(SelectedProduct));
 
@@ -135,11 +158,31 @@ namespace DrinkWholeSale.Desktop.ViewModel
 
 
             ChangeImageCommand = new DelegateCommand(_ => StartingImageChange?.Invoke(this, EventArgs.Empty));
-
+            SubCats = new ObservableCollection<SubCatViewModel>();
 
         }
 
-       
+        private async Task ChangeStateOfOrderAsync()
+        {
+            try
+            {
+                var order = (OrderDto)SelectedOrder;
+                order.Items = OrdersProduct.ToList();
+                if (await _service.FullFillOrders(order))
+                {
+                    LoadOrdersAsync();
+                    if(SelectedSubCat != null)
+                    {
+                        LoadProductAsync(SelectedSubCat);
+                    }
+                }
+            }
+
+            catch (Exception ex) when (ex is NetworkException || ex is HttpRequestException)
+            {
+                OnMessageApplication($"Unexpected error occured! ({ex.Message})");
+            }
+        }
 
         private async void LogoutAsync()
         {
@@ -169,17 +212,22 @@ namespace DrinkWholeSale.Desktop.ViewModel
             }
         }
 
-        private async void LoadOrdersAsync()
+        private async void LoadOrdersAsync(bool open = false)
         {
             try
             {
                 Orders = new ObservableCollection<OrderViewModel>((await _service.LoadOrdersAsync())
                    .Select(list => (OrderViewModel)list));
+                foreach(OrderViewModel o in Orders)
+                {
+                    o.FulfilledText = (o.Fulfilled) ? "Full filled" : "Not full filled";
+                }
             }
             catch (Exception ex) when (ex is NetworkException || ex is HttpRequestException)
             {
                 OnMessageApplication($"Unexpected error occured! ({ex.Message})");
             }
+            if(open) OpenOrders?.Invoke(this, EventArgs.Empty);
         }
 
         private async void AddMainCat()
@@ -231,6 +279,22 @@ namespace DrinkWholeSale.Desktop.ViewModel
             }
         }
 
+        private async void LoadProductAsync(SubCatViewModel subcatDto)
+        {
+            if (subcatDto is null)
+                return;
+
+            try
+            {
+                SelectedMainCatName = subcatDto.Name;
+                Products = new ObservableCollection<ProductViewModel>((await _service.LoadProductAsync(subcatDto.Id))
+                    .Select(item => (ProductViewModel)item));
+            }
+            catch (Exception ex) when (ex is NetworkException || ex is HttpRequestException)
+            {
+                OnMessageApplication($"Unexpected error occured! ({ex.Message})");
+            }
+        }
 
         private async void LoadSubCatsAsync(MainCatViewModel maincat)
         {
@@ -326,37 +390,26 @@ namespace DrinkWholeSale.Desktop.ViewModel
             try
             {
                 SelectedOrderName = subcatDto.Name;
-                Orders = new ObservableCollection<OrderViewModel>((await _service.LoadOrderAsync(subcatDto.Id))
-                    .Select(item => (OrderViewModel)item));
+                OrdersProduct = new ObservableCollection<ShoppingCartDto>((await _service.LoadOrderAsync(subcatDto.Id))
+                    .Select(item => (ShoppingCartDto)item));
             }
             catch (Exception ex) when (ex is NetworkException || ex is HttpRequestException)
             {
                 OnMessageApplication($"Unexpected error occured! ({ex.Message})");
             }
+            int a = 0;
         }
-        private async void LoadProductAsync(SubCatViewModel subcatDto)
-        {
-            if (subcatDto is null)
-                return;
-
-            try
-            {
-                SelectedMainCatName = subcatDto.Name;
-                Products = new ObservableCollection<ProductViewModel>((await _service.LoadProductAsync(subcatDto.Id))
-                    .Select(item => (ProductViewModel)item));
-            }
-            catch (Exception ex) when (ex is NetworkException || ex is HttpRequestException)
-            {
-                OnMessageApplication($"Unexpected error occured! ({ex.Message})");
-            }
-        }
+        
 
         private async void AddProduct()
         {
             var newItem = new ProductViewModel
             {
                 Name = "New Item",
-                SubCatId = SelectedSubCat.Id
+                SubCatId = SelectedSubCat.Id,
+                Producer = "No one",
+                Description = ""
+                
             };
 
             var itemDto = (ProductDto)newItem;

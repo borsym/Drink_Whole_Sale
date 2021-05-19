@@ -31,13 +31,13 @@ namespace DrinkWholeSale.WebApi.Controllers
 
         // GET: api/MainCats/5
         [HttpGet("{id}")]
-        public ActionResult<MainCatDto> GetMainCat(int id)
+        public ActionResult<MainCatDto> GetMainCat(int? id)
         {
             try
             {
                 return (MainCatDto) _service.GetMainCatById(id);
             }
-            catch (InvalidOperationException)
+            catch (NullReferenceException)
             {
                 return NotFound();
             }

@@ -84,18 +84,18 @@ namespace DrinkWholeSale.WebApi.Tests
             Assert.Equal(id, content.Id);
         }
 
-        //[Fact]
-        //public void GetInvalidListTest()
-        //{
-        //    // Arrange
-        //    var id = 4;
+        [Fact]
+        public void GetInvalidListTest()
+        {
+            // Arrange
+            var id = 4;
 
-        //    // Act
-        //    var result = _controller.GetMainCat(3);
+            // Act
+            var result = _controller.GetMainCat(3);
 
-        //    // Assert
-        //    Assert.IsAssignableFrom<NotFoundResult>(result.Result);
-        //}
+            // Assert
+            Assert.IsAssignableFrom<NotFoundResult>(result.Result);
+        }
 
         [Fact]
         public void PostListTest()

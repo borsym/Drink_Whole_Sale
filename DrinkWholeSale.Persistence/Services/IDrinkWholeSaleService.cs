@@ -1,4 +1,5 @@
 ﻿using DrinkWholeSale.Persistence;
+using DrinkWholeSale.Persistence.Shopping;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,6 +41,10 @@ namespace DrinkWholeSale.Persistence.Services
         bool UpdateItem(Product product);
         Product CreateProduct(Product product);
         bool DeleteProduct(int id);
+        Task<bool> SetStateOrderAsync(Order order);
+        List<Order> GetOrders();
+        Order GetOrder(int id);
+        bool OrderExist(int id);
 
         //  void AddItemShoppingCart(ShoppingCart cartItem);
         //  void RemoveItemShoppingCart(ShoppingCart cartItem);

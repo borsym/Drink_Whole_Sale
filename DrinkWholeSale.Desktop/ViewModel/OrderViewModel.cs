@@ -58,10 +58,17 @@ namespace DrinkWholeSale.Desktop.ViewModel
 
         private bool _fulfilled;
 
-        public bool fulfilled
+        public bool Fulfilled
         {
             get { return _fulfilled; }
             set { _fulfilled = value; OnPropertyChanged(); }
+        }
+
+        private String _fulfilledText;
+        public String FulfilledText
+        {
+            get { return _fulfilledText; }
+            set { _fulfilledText = value; OnPropertyChanged(); }
         }
         public OrderViewModel ShallowClone()
         {
@@ -83,7 +90,7 @@ namespace DrinkWholeSale.Desktop.ViewModel
             Phone = dto.Phone,
             Email = dto.Email,
             GuestId = dto.GuestId,
-            fulfilled = dto.fulfilled
+            Fulfilled = dto.fulfilled
 
 
         };
@@ -96,7 +103,7 @@ namespace DrinkWholeSale.Desktop.ViewModel
             Phone = vm.Phone,
             Email = vm.Email,
             GuestId = vm.GuestId,
-            fulfilled = vm.fulfilled
+            fulfilled = vm.Fulfilled
         };
     }
 }

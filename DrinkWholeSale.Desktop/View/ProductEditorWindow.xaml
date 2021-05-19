@@ -28,6 +28,9 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Label Grid.Row="0" Grid.Column="0" Content="Name:" VerticalAlignment="Center" />
@@ -39,7 +42,7 @@
                  Text="{Binding EditableProduct.Description}" />
 
         <Label Grid.Row="2" Grid.Column="0" Content="NetPrice:" VerticalAlignment="Center" />
-        <TextBox Grid.Row="2" Grid.Column="2" Margin="5" TextWrapping="Wrap" MaxLines="2" VerticalScrollBarVisibility="Auto"
+        <TextBox Grid.Row="2" Grid.Column="1" Margin="5" TextWrapping="Wrap" MaxLines="2" VerticalScrollBarVisibility="Auto"
                  Text="{Binding EditableProduct.NetPrice}" />
 
         <Label Grid.Row="3" Grid.Column="0" Content="Image:" VerticalAlignment="Center" />
@@ -51,21 +54,27 @@
                 HorizontalAlignment="Left" VerticalAlignment="Center"
                 Width="73"  Height="21"  Margin="5"
                 Command="{Binding ChangeImageCommand}"/>
-
-        <Label Grid.Row="5" Grid.Column="0" Content="List:" VerticalAlignment="Center" />
+        
+        <Label Grid.Row="5" Grid.Column="0" Content="Packing:" VerticalAlignment="Center" />
         <ComboBox Grid.Row="5" Grid.Column="1" Margin="5"
+                  ItemsSource="{Binding Packing}"
+                  SelectedValue="{Binding EditableProduct.Pack}"
+                  />
+        
+        <Label Grid.Row="6" Grid.Column="0" Content="List:" VerticalAlignment="Center" />
+        <ComboBox Grid.Row="6" Grid.Column="1" Margin="5"
                   ItemsSource="{Binding SubCats}"
                   SelectedValue="{Binding EditableProduct.ListId}"
                   SelectedValuePath="Id"
                   DisplayMemberPath="Name" />
 
-        <Button Grid.Row="6" Grid.Column="0" Content="Cancel"
+        <Button Grid.Row="7" Grid.Column="0" Content="Cancel"
                 HorizontalAlignment="Left" VerticalAlignment="Center"
                 Width="73"  Height="21"  Margin="5"
                 IsCancel="True"
                 Command="{Binding CancelProductEditCommand}"/>
 
-        <Button Grid.Row="6" Grid.Column="1" Content="Save"
+        <Button Grid.Row="7" Grid.Column="1" Content="Save"
                 HorizontalAlignment="Right" VerticalAlignment="Center"
                 Width="73"  Height="21"  Margin="5"
                 IsDefault="True"

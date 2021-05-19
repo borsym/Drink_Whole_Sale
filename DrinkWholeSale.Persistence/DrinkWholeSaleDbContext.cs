@@ -22,6 +22,7 @@ namespace DrinkWholeSale.Persistence
         // public DbSet<CartItem> ShoppingCartItems { get; set; }
         //public DbSet<ShoppingCart> ShoppingCarts { get; set; }
 
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

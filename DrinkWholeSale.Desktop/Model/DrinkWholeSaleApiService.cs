@@ -97,13 +97,14 @@ namespace DrinkWholeSale.Desktop.Model
         }
         
 
-        public async Task<IEnumerable<OrderDto>> LoadOrderAsync(int orderId)
+        public async Task<IEnumerable<ShoppingCartDto>> LoadOrderAsync(int orderId)
         {
             var response = await _client.GetAsync($"api/Orders/{orderId}");  // jol írtam?
-
+            
             if (response.IsSuccessStatusCode)
             {
-                return await response.Content.ReadAsAsync<IEnumerable<OrderDto>>();
+                var result = await response.Content.ReadAsAsync<IEnumerable<ShoppingCartDto>>();
+                return result;
             }
 
             throw new NetworkException("Service returned respsone: " + response.StatusCode);
@@ -176,12 +177,14 @@ namespace DrinkWholeSale.Desktop.Model
         public async Task CreateProductAsync(ProductDto list)
         {
             HttpResponseMessage response = await _client.PostAsJsonAsync("api/Products/", list);
-            list.Id = (await response.Content.ReadAsAsync<MainCatDto>()).Id;
+            
 
             if (!response.IsSuccessStatusCode)
             {
                 throw new NetworkException("Service returned response: " + response.StatusCode);
             }
+
+            list.Id = (await response.Content.ReadAsAsync<ProductDto>()).Id;
         }
         // ITT BAJ LEHET, lehet kisbeítű mindenhol a api/eza rész
         public async Task UpdateProductAsync(ProductDto list)
@@ -202,6 +205,17 @@ namespace DrinkWholeSale.Desktop.Model
             {
                 throw new NetworkException("Service returned response: " + response.StatusCode);
             }
+        }
+
+        public async Task<bool> FullFillOrders(OrderDto list)
+        {
+            HttpResponseMessage response = await _client.PutAsJsonAsync($"api/Orders/{list.Id}",list);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new NetworkException("Service returned response: " + response.StatusCode);
+            }
+            return true;
         }
 
     }
