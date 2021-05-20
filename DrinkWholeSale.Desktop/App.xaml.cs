@@ -26,7 +26,7 @@ namespace DrinkWholeSale.Desktop
         private SubCatEditorWindow _subCatEditView;
         private ProductEditorWindow _productEditView;
         private OrderWindow _orderWindow;
-        private OrderViewModel _orderViewModel;
+        private FilterWindow _filterWindow;
         public App()
         {
             Startup += App_Startup;
@@ -57,6 +57,8 @@ namespace DrinkWholeSale.Desktop
             _mainViewModel.FinishingProductEdit += _mainViewModel_FinishingProductEdit;
             _mainViewModel.StartingImageChange += _mainViewModel_StartingImageChange;
             _mainViewModel.OpenOrders += _mainViewModel_OrdersTab;
+            _mainViewModel.FinishingFilter += _mainViewModel_CloseFilter;
+            _mainViewModel.OpenFilterWindow += _mainViewModel_OpenFilter;
             _view = new MainWindow
             {
                 DataContext = _mainViewModel
@@ -66,6 +68,23 @@ namespace DrinkWholeSale.Desktop
 
             _loginView.Show();
             
+        }
+
+        private void _mainViewModel_CloseFilter(object sender, EventArgs e) // itt baj van
+        {
+            if (_filterWindow.IsActive)
+            {
+                _filterWindow.Close();
+            }
+        }
+
+        private void _mainViewModel_OpenFilter(object sender, EventArgs e)
+        {
+            _filterWindow = new FilterWindow
+            {
+                DataContext = _mainViewModel
+            };
+            _filterWindow.ShowDialog();
         }
 
         private void _mainViewModel_OrdersTab(object sender, EventArgs e)

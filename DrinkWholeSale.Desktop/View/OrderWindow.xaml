@@ -17,6 +17,7 @@
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_Refresh lists" Command="{Binding RefreshOrderCommand}" />
             <MenuItem Header="Logout" Command="{Binding LogoutCommand}" />
+            <MenuItem Header="Filter" Command="{Binding FilterCommand}" />
         </Menu>
         <Grid>
             <Grid.RowDefinitions>
@@ -47,6 +48,7 @@
                         <DataGridTextColumn Binding="{Binding Email}" Width="*" />
                         <DataGridTextColumn Binding="{Binding Phone}" Width="*" />
                         <DataGridTextColumn Binding="{Binding FulfilledText}" Width="*" />
+                        <DataGridTextColumn Binding="{Binding OrderDate}" Width="*" />
                     </DataGrid.Columns>
                 </DataGrid>
             </GroupBox>
@@ -60,16 +62,8 @@
                 </GroupBox.Header>
                 <DataGrid ItemsSource="{Binding OrdersProduct}"
                       VerticalContentAlignment="Stretch"  IsReadOnly="True"
-                      AutoGenerateColumns="False" HeadersVisibility="None"
-                      SelectedItem="{Binding SelectedSubCat}"    
+                      AutoGenerateColumns="False" HeadersVisibility="None"  
                           >
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="SelectionChanged">
-                            <i:InvokeCommandAction
-                                Command="{Binding SelectCommand2}"
-                              />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
                     <DataGrid.Columns>
                         <DataGridTextColumn Binding="{Binding Name}" Width="*" />
                     </DataGrid.Columns>

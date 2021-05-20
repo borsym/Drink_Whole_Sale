@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,6 +12,28 @@ namespace DrinkWholeSale.Persistence
    
     public class DbInitializer
     {
+        private static DrinkWholeSaleDbContext context;
+        private static UserManager<Guest> userManager;
+        private static RoleManager<IdentityRole<int>> roleManager;
+
+        private static void SeedUsers()
+        {
+            var adminUser = new Guest
+            {
+                UserName = "admin",
+                Name = "Adminisztátor",
+                Email = "admin@example.com",
+                PhoneNumber = "+36123456789"
+            };
+            //adminUser.Id = Guid.NewGuid().ToString();
+            var adminPassword = "Almafa123";
+            var adminRole = new IdentityRole<int>("administrator");
+
+            var result1 = userManager.CreateAsync(adminUser, adminPassword).Result;
+            var result2 = roleManager.CreateAsync(adminRole).Result;
+            var result3 = userManager.AddToRoleAsync(adminUser, adminRole.Name).Result;
+        }
+
         public static Packaging getPacking(int quant)
         {
             if (quant >= 6 && quant < 12)
@@ -21,11 +45,15 @@ namespace DrinkWholeSale.Persistence
 
             return Packaging.PIECE;
         }
-        public static void Initialize(DrinkWholeSaleDbContext context, string imageDirectory)
+        public static void Initialize(IServiceProvider serviceProvider, string imageDirectory)
         {
-            context.Database.Migrate();// ideiglenesen cserélve
+            context = serviceProvider.GetRequiredService<DrinkWholeSaleDbContext>();
+            userManager = serviceProvider.GetRequiredService<UserManager<Guest>>();
+            roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole<int>>>();
+
+            //context.Database.Migrate();// ideiglenesen cserélve
             //context.Database.EnsureDeleted();
-            //context.Database.EnsureCreated();
+            context.Database.EnsureCreated();
 
             if (context.MainCats.Any()) return;
 
@@ -38,7 +66,8 @@ namespace DrinkWholeSale.Persistence
             var narancs_sioPath = Path.Combine(imageDirectory, "narancs_sio.png");
             var jim_bimPath = Path.Combine(imageDirectory, "jim_bim.png");
 
-            
+            SeedUsers();
+
             IList<MainCat> defaultLists = new List<MainCat>()
             {
                 new MainCat

@@ -85,7 +85,7 @@ namespace DrinkWholeSale.WebApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -102,6 +102,7 @@ namespace DrinkWholeSale.WebApi
             {
                 endpoints.MapControllers();
             });
+            DbInitializer.Initialize(serviceProvider, Configuration.GetValue<String>("ImageStore"));
         }
     }
 }

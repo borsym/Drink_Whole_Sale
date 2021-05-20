@@ -23,6 +23,8 @@ namespace DrinkWholeSale.Desktop.ViewModel
         private ObservableCollection<String> _packing;
         private ObservableCollection<ShoppingCartDto> _ordersProduct;
 
+        private ObservableCollection<OrderViewModel> tmpOrders;
+
         private SubCatViewModel _selectedSubCat;
         private MainCatViewModel _selectedMainCat;
         private SubCatViewModel _editableSubCat;
@@ -33,6 +35,28 @@ namespace DrinkWholeSale.Desktop.ViewModel
         private ProductViewModel _editableProduct;
         private ProductViewModel _selectedProduct;
         private String _selectedSubCatName;
+
+        private String _filterName;
+        private bool _filterFullFilled;
+        private DateTime _filterDate;
+
+        public DateTime FilterDate
+        {
+            get { return _filterDate; }
+            set { _filterDate = value; OnPropertyChanged(); }
+        }
+
+        public String FilterName
+        {
+            get { return _filterName; }
+            set { _filterName = value; OnPropertyChanged(); }
+        }
+
+        public bool FilterFullFilled
+        {
+            get { return _filterFullFilled; }
+            set { _filterFullFilled = value; OnPropertyChanged(); }
+        }
 
         public ObservableCollection<ShoppingCartDto> OrdersProduct
         {
@@ -69,6 +93,7 @@ namespace DrinkWholeSale.Desktop.ViewModel
         public ProductViewModel EditableProduct { get { return _editableProduct;  }  set { _editableProduct = value; OnPropertyChanged(); } }
         public DelegateCommand RefreshListsCommand { get; private set; }
         public DelegateCommand RefreshOrderCommand { get; private set; }
+        public DelegateCommand FilterCommand { get; private set; }
         public DelegateCommand LogoutCommand { get; private set; }
         public DelegateCommand OrderCommand { get; private set; }
         public DelegateCommand AcceptCommand { get; private set; }
@@ -93,6 +118,9 @@ namespace DrinkWholeSale.Desktop.ViewModel
         public DelegateCommand CancelProductEditCommand { get; private set; }
 
 
+        public DelegateCommand SaveFilterCommand { get; private set; }
+        public DelegateCommand CancelFilterCommand { get; private set; }
+        public DelegateCommand ClearFilterCommand { get; private set; }
 
         public DelegateCommand ChangeImageCommand { get; private set; }
         public SubCatViewModel SelectedSubCat { get { return _selectedSubCat; } set { _selectedSubCat = value; OnPropertyChanged(); } }
@@ -111,13 +139,15 @@ namespace DrinkWholeSale.Desktop.ViewModel
         public event EventHandler LogoutSucceeded;
         public event EventHandler StartingSubCatEdit;
         public event EventHandler StartingProductEdit;
+        public event EventHandler StartingFilter;
 
         public event EventHandler FinishingSubCatEdit;
         public event EventHandler FinishingProductEdit;
+        public event EventHandler FinishingFilter;
 
         public event EventHandler StartingImageChange;
         public event EventHandler OpenOrders;
-
+        public event EventHandler OpenFilterWindow;
         public MainViewModel(DrinkWholeSaleApiService service)
         {
             _service = service;
@@ -126,6 +156,7 @@ namespace DrinkWholeSale.Desktop.ViewModel
             RefreshOrderCommand = new DelegateCommand(_ => LoadOrdersAsync());
             OrderCommand = new DelegateCommand(_ => LoadOrdersAsync(true));
             LogoutCommand = new DelegateCommand(_ => LogoutAsync());
+            FilterCommand = new DelegateCommand(_ => OpenFilter());
 
             List<Packaging> packagings = new List<Packaging>(Enum.GetValues(typeof(Packaging)).Cast<Packaging>());
             _packing = new ObservableCollection<String>();
@@ -156,10 +187,53 @@ namespace DrinkWholeSale.Desktop.ViewModel
             SaveProductEditCommand = new DelegateCommand(_ => SaveProductEdit());
             CancelProductEditCommand = new DelegateCommand(_ => CancelItemEdit());
 
+            SaveFilterCommand = new DelegateCommand(_ => FilterOrders());
+            ClearFilterCommand = new DelegateCommand(_ => ClearFilters());
 
             ChangeImageCommand = new DelegateCommand(_ => StartingImageChange?.Invoke(this, EventArgs.Empty));
             SubCats = new ObservableCollection<SubCatViewModel>();
 
+        }
+
+        private void ClearFilters()
+        {
+            FilterName = "";
+            LoadOrdersAsync();
+            FinishingFilter?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void OpenFilter()
+        {
+            int a = 0;
+            if(!(OrdersProduct is null))
+                OrdersProduct.Clear();
+            OpenFilterWindow?.Invoke(this, EventArgs.Empty);
+            
+        }
+
+        public void FilterOrders()
+        {
+
+            if (FilterName != null)
+            {
+                Orders = new ObservableCollection<OrderViewModel>(Orders.Where(t => t.Name.StartsWith(FilterName)).ToList());
+            }
+            if (FilterDate != null)
+            {
+                Orders = new ObservableCollection<OrderViewModel>(Orders.Where(t => t.OrderDate.Date == FilterDate.Date).ToList());
+            }
+            if (FilterFullFilled)
+            {
+                Orders = new ObservableCollection<OrderViewModel>(Orders.Where(t => t.Fulfilled == true).ToList());
+            }
+            else
+            {
+                Orders = new ObservableCollection<OrderViewModel>(Orders.Where(t => t.Fulfilled == false || t.Fulfilled == true).ToList());
+            }
+            
+
+
+            FinishingFilter?.Invoke(this, EventArgs.Empty);
         }
 
         private async Task ChangeStateOfOrderAsync()
@@ -218,10 +292,12 @@ namespace DrinkWholeSale.Desktop.ViewModel
             {
                 Orders = new ObservableCollection<OrderViewModel>((await _service.LoadOrdersAsync())
                    .Select(list => (OrderViewModel)list));
+
                 foreach(OrderViewModel o in Orders)
                 {
                     o.FulfilledText = (o.Fulfilled) ? "Full filled" : "Not full filled";
                 }
+                tmpOrders = Orders;
             }
             catch (Exception ex) when (ex is NetworkException || ex is HttpRequestException)
             {
@@ -466,6 +542,8 @@ namespace DrinkWholeSale.Desktop.ViewModel
             {
                 OnMessageApplication($"Unexpected error occured! ({ex.Message})");
             }
+            
+            LoadProductAsync(SelectedSubCat);
             FinishingProductEdit?.Invoke(this, EventArgs.Empty);
         }
     }

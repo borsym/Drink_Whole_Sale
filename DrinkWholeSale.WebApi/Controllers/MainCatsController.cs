@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using DrinkWholeSale.Persistence;
 using DrinkWholeSale.Persistence.Services;
 using DrinkWholeSale.Persistence.DTO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DrinkWholeSale.WebApi.Controllers
 {
@@ -46,6 +47,7 @@ namespace DrinkWholeSale.WebApi.Controllers
         // PUT: api/MainCats/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [Authorize(Roles = "administrator")]
         [HttpPut("{id}")]
         public IActionResult PutMainCat(int id, MainCatDto mainCat)
         {
@@ -64,6 +66,7 @@ namespace DrinkWholeSale.WebApi.Controllers
         // POST: api/MainCats
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [Authorize(Roles = "administrator")]
         [HttpPost]
         public ActionResult<MainCat> PostMainCat(MainCatDto mainCat)
         {
@@ -74,6 +77,7 @@ namespace DrinkWholeSale.WebApi.Controllers
         }
 
         // DELETE: api/MainCats/5
+        [Authorize(Roles = "administrator")]
         [HttpDelete("{id}")]
         public IActionResult DeleteMainCat(int id)
         {

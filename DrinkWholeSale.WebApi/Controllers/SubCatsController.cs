@@ -56,7 +56,7 @@ namespace DrinkWholeSale.WebApi.Controllers
         // PUT: api/SubCats/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [Authorize]
+        [Authorize(Roles = "administrator")]
         [HttpPut("{id}")]
         public IActionResult PutSubCat(int id, SubCatDto subCat)
         {
@@ -78,7 +78,7 @@ namespace DrinkWholeSale.WebApi.Controllers
         // POST: api/SubCats
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [Authorize]
+        [Authorize(Roles = "administrator")]
         [HttpPost]
         public ActionResult<SubCat> PostSubCat(SubCatDto subCatdto)
         {
@@ -90,7 +90,7 @@ namespace DrinkWholeSale.WebApi.Controllers
         }
 
         // DELETE: api/SubCats/5
-        [Authorize]
+        [Authorize(Roles = "administrator")]
         [HttpDelete("{id}")]
         public ActionResult<SubCat> DeleteSubCat(int id)
         {

@@ -58,7 +58,7 @@ namespace DrinkWholeSale.WebApi.Controllers
         // PUT: api/Products/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [Authorize]
+        [Authorize(Roles = "administrator")]
         [HttpPut("{id}")]
         public IActionResult PutProduct(int id, Product product)
         {
@@ -80,7 +80,7 @@ namespace DrinkWholeSale.WebApi.Controllers
         // POST: api/Products
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [Authorize]
+        [Authorize(Roles = "administrator")]
         [HttpPost]
         public ActionResult<Product> PostProduct(ProductDto product)
         {
@@ -92,6 +92,7 @@ namespace DrinkWholeSale.WebApi.Controllers
         }
 
         // DELETE: api/Products/5
+        [Authorize(Roles = "administrator")]
         [HttpDelete("{id}")]
         public ActionResult DeleteProduct(int id)
         {

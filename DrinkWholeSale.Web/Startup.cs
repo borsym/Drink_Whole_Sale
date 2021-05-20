@@ -129,7 +129,7 @@ namespace DrinkWholeSale.Web
             });
             var context = services.GetRequiredService<DrinkWholeSaleDbContext>();
             var directory = Configuration["ImageStore"];
-            DbInitializer.Initialize(context, directory);
+            DbInitializer.Initialize(services, Configuration.GetValue<String>("ImageStore"));
         }
     }
 }
