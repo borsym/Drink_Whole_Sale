@@ -98,9 +98,9 @@ namespace DrinkWholeSale.Desktop.ViewModel
         public DelegateCommand OrderCommand { get; private set; }
         public DelegateCommand AcceptCommand { get; private set; }
         public DelegateCommand SelectCommand { get; private set; }
-        public DelegateCommand SelectCommand2 { get; private set; } // ez így??
+        public DelegateCommand SelectCommand2 { get; private set; } 
         
-        public DelegateCommand SelectCommandOrder { get; private set; } // ez így??
+        public DelegateCommand SelectCommandOrder { get; private set; } 
         public DelegateCommand AddMainCatCommand { get; private set; }
         public DelegateCommand EditMainCatCommand { get; private set; }
         public DelegateCommand DeleteMainCatCommand { get; private set; }
@@ -205,7 +205,6 @@ namespace DrinkWholeSale.Desktop.ViewModel
 
         private void OpenFilter()
         {
-            int a = 0;
             if(!(OrdersProduct is null))
                 OrdersProduct.Clear();
             LoadOrdersAsync();
