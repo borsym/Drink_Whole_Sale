@@ -151,7 +151,8 @@ namespace DrinkWholeSale.Desktop.ViewModel
         public MainViewModel(DrinkWholeSaleApiService service)
         {
             _service = service;
-
+            FilterName = "";
+            FilterDate = DateTime.Now;
             RefreshListsCommand = new DelegateCommand(_ => LoadMainCatsAsync());
             RefreshOrderCommand = new DelegateCommand(_ => LoadOrdersAsync());
             OrderCommand = new DelegateCommand(_ => LoadOrdersAsync(true));
@@ -207,29 +208,23 @@ namespace DrinkWholeSale.Desktop.ViewModel
             int a = 0;
             if(!(OrdersProduct is null))
                 OrdersProduct.Clear();
+            LoadOrdersAsync();
             OpenFilterWindow?.Invoke(this, EventArgs.Empty);
             
         }
 
         public void FilterOrders()
         {
-
-            if (FilterName != null)
+            if (FilterName.Length != 0 )
             {
                 Orders = new ObservableCollection<OrderViewModel>(Orders.Where(t => t.Name.StartsWith(FilterName)).ToList());
             }
-            if (FilterDate != null)
+            if (FilterDate.Year > 2000)
             {
                 Orders = new ObservableCollection<OrderViewModel>(Orders.Where(t => t.OrderDate.Date == FilterDate.Date).ToList());
             }
-            if (FilterFullFilled)
-            {
-                Orders = new ObservableCollection<OrderViewModel>(Orders.Where(t => t.Fulfilled == true).ToList());
-            }
-            else
-            {
-                Orders = new ObservableCollection<OrderViewModel>(Orders.Where(t => t.Fulfilled == false || t.Fulfilled == true).ToList());
-            }
+
+            Orders = new ObservableCollection<OrderViewModel>(Orders.Where(t => t.Fulfilled == FilterFullFilled).ToList());
             
 
 
