@@ -20,5 +20,6 @@ namespace DrinkWholeSale.Persistence.Shopping
         public virtual  Guest Guest { get; set; }
         public int GuestId { get; set; }
         public bool fulfilled { get; set; }
+        public DateTime orderDate { get; set; }
     }
 }

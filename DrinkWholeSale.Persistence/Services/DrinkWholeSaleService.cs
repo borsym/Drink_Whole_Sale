@@ -200,6 +200,7 @@ namespace DrinkWholeSale.Persistence.Services
                 fulfilled = true,
                 GuestId = guest.Id,
                 Phone = guest.PhoneNumber,
+                orderDate = DateTime.Now
             });
 
 
@@ -383,6 +384,7 @@ namespace DrinkWholeSale.Persistence.Services
         {
             try
             {
+                product.Pack = getPacking(product.Quantity);
                 _context.Update(product);
                 if (product.Image == null)
                 {

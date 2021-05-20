@@ -16,6 +16,7 @@ namespace DrinkWholeSale.Persistence.DTO
         public int GuestId { get; set; }
         public bool fulfilled { get; set; }
         public List<ShoppingCartDto> Items { get; set; }
+        public DateTime orderDate { get; set; }
 
         public static explicit operator Order(OrderDto dto) => new Order
         {
@@ -26,7 +27,8 @@ namespace DrinkWholeSale.Persistence.DTO
             Email = dto.Email,
             GuestId = dto.GuestId,
             fulfilled = dto.fulfilled,
-            items = dto.Items.Select(r => (ShoppingCart)r).ToList()
+            items = dto.Items.Select(r => (ShoppingCart)r).ToList(),
+            orderDate = dto.orderDate
            
         };
 
@@ -39,7 +41,8 @@ namespace DrinkWholeSale.Persistence.DTO
             Email = m.Email,
             GuestId = m.GuestId,
             fulfilled = m.fulfilled,
-            Items = m.items.Select(r => (ShoppingCartDto)r).ToList()
+            Items = m.items.Select(r => (ShoppingCartDto)r).ToList(),
+            orderDate = m.orderDate
 
         };
     }

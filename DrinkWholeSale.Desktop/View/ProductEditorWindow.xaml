@@ -55,12 +55,10 @@
                 Width="73"  Height="21"  Margin="5"
                 Command="{Binding ChangeImageCommand}"/>
         
-        <Label Grid.Row="5" Grid.Column="0" Content="Packing:" VerticalAlignment="Center" />
-        <ComboBox Grid.Row="5" Grid.Column="1" Margin="5"
-                  ItemsSource="{Binding Packing}"
-                  SelectedValue="{Binding EditableProduct.Pack}"
-                  />
-        
+        <Label Grid.Row="5" Grid.Column="0" Content="Quantity:" VerticalAlignment="Center" />
+        <TextBox Grid.Row="5" Grid.Column="1" Margin="5" TextWrapping="Wrap" MaxLines="2" VerticalScrollBarVisibility="Auto"
+                 Text="{Binding EditableProduct.Quantity}" />
+
         <Label Grid.Row="6" Grid.Column="0" Content="List:" VerticalAlignment="Center" />
         <ComboBox Grid.Row="6" Grid.Column="1" Margin="5"
                   ItemsSource="{Binding SubCats}"

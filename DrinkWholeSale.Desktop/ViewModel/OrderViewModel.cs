@@ -70,6 +70,13 @@ namespace DrinkWholeSale.Desktop.ViewModel
             get { return _fulfilledText; }
             set { _fulfilledText = value; OnPropertyChanged(); }
         }
+
+        public DateTime _orderDate;
+        public DateTime OrderDate
+        {
+            get { return _orderDate; }
+            set { _orderDate = value; OnPropertyChanged(); }
+        }
         public OrderViewModel ShallowClone()
         {
             return (OrderViewModel)this.MemberwiseClone();
@@ -90,7 +97,8 @@ namespace DrinkWholeSale.Desktop.ViewModel
             Phone = dto.Phone,
             Email = dto.Email,
             GuestId = dto.GuestId,
-            Fulfilled = dto.fulfilled
+            Fulfilled = dto.fulfilled,
+            OrderDate = dto.orderDate
 
 
         };
@@ -103,7 +111,8 @@ namespace DrinkWholeSale.Desktop.ViewModel
             Phone = vm.Phone,
             Email = vm.Email,
             GuestId = vm.GuestId,
-            fulfilled = vm.Fulfilled
+            fulfilled = vm.Fulfilled,
+            orderDate = vm.OrderDate
         };
     }
 }

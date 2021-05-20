@@ -9,6 +9,7 @@ using DrinkWholeSale.Persistence;
 using DrinkWholeSale.Persistence.Shopping;
 using DrinkWholeSale.Persistence.DTO;
 using DrinkWholeSale.Persistence.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DrinkWholeSale.WebApi.Controllers
 {
@@ -48,6 +49,7 @@ namespace DrinkWholeSale.WebApi.Controllers
         // PUT: api/Orders/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [Authorize(Roles = "administrator")]
         [HttpPut("{id}")]
         public async Task<ActionResult<bool>> PutOrderAsync(int id, OrderDto order)
         {
