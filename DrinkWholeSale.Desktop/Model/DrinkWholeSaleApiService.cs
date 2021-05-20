@@ -151,7 +151,7 @@ namespace DrinkWholeSale.Desktop.Model
                 throw new NetworkException("Service returned response: " + response.StatusCode);
             }
         }
-        // ITT IS LEHET BAJ
+      
         public async Task UpdateSubCatAsync(SubCatDto list)
         {
             Debug.WriteLine("ITT VAN:: "+list.Id);
@@ -186,7 +186,7 @@ namespace DrinkWholeSale.Desktop.Model
 
             list.Id = (await response.Content.ReadAsAsync<ProductDto>()).Id;
         }
-        // ITT BAJ LEHET, lehet kisbeítű mindenhol a api/eza rész
+        
         public async Task UpdateProductAsync(ProductDto list)
         {
             HttpResponseMessage response = await _client.PutAsJsonAsync($"api/Products/{list.Id}", list);

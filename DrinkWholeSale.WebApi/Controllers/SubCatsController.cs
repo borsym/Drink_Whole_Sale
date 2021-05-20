@@ -47,7 +47,7 @@ namespace DrinkWholeSale.WebApi.Controllers
             {
                 return (SubCatDto)_service.GetSubCatById(id);
             }
-            catch (InvalidOperationException)
+            catch (NullReferenceException)
             {
                 return NotFound();
             }

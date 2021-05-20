@@ -45,10 +45,10 @@ namespace DrinkWholeSale.WebApi.Controllers
         {
             try
             {
-                var jozsi = (ProductDto)_service.GetProductById(id);
-                return jozsi;
+                var result = (ProductDto)_service.GetProductById(id);
+                return result;
             }
-            catch (InvalidOperationException)
+            catch (NullReferenceException)
             {
 
                 return NotFound();
