@@ -62,7 +62,7 @@
         <Label Grid.Row="6" Grid.Column="0" Content="List:" VerticalAlignment="Center" />
         <ComboBox Grid.Row="6" Grid.Column="1" Margin="5"
                   ItemsSource="{Binding SubCats}"
-                  SelectedValue="{Binding EditableProduct.ListId}"
+                  SelectedValue="{Binding EditableProduct.SubCatId}"
                   SelectedValuePath="Id"
                   DisplayMemberPath="Name" />
 
