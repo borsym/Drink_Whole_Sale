@@ -526,11 +526,6 @@ namespace DrinkWholeSale.Desktop.ViewModel
             {
                 SelectedProduct.CopyFrom(EditableProduct);
                 await _service.UpdateProductAsync((ProductDto)SelectedProduct);
-                if (SelectedProduct.SubCatId != SelectedSubCat.Id)
-                {
-                    Products.Remove(SelectedProduct);
-                    SelectedProduct = null;
-                }
             }
             catch (Exception ex) when (ex is NetworkException || ex is HttpRequestException)
             {
